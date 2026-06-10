@@ -8,7 +8,7 @@ import type { Bridge } from '../types';
 
 export function BridgeConfig({ bridge, onClose }: { bridge: Bridge | null; onClose: () => void }) {
   const lamps = useStore((s) => s.devices).filter((d) => d.type === 'light');
-  const { editBridge } = useStore();
+  const { saveBridge } = useStore();
   const [edits, setEdits] = useState<Partial<Bridge>>({});
   useEffect(() => {
     setEdits({});
@@ -18,7 +18,7 @@ export function BridgeConfig({ bridge, onClose }: { bridge: Bridge | null; onClo
   const upd = (p: Partial<Bridge>) => {
     const ne = { ...edits, ...p };
     setEdits(ne);
-    editBridge({ ...bridge, ...ne });
+    saveBridge({ ...bridge, ...ne });
   };
   const myLamps = lamps.filter((l) => l.bridge === bridge.id);
   const field = (label: string, key: 'name' | 'ip', mono?: boolean) => (
