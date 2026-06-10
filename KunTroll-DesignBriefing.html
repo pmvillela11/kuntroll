@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kun Troll — Homeware Hub · Design Briefing</title>
+<style>
+  :root {
+    --bg: #1A1A2E;
+    --card: #252540;
+    --card2: #1E1E38;
+    --violet: #6B28EE;
+    --violet-deep: #5A20CC;
+    --violet-mid: #3D1599;
+    --lime: #C8FF00;
+    --lime-dim: #A8D900;
+    --white: #F0F0F0;
+    --muted: #A0A0A0;
+    --border: rgba(180,180,180,0.15);
+    --glow: rgba(107,40,238,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Nunito', system-ui, sans-serif;
+    font-weight: 700;
+    line-height: 1.6;
+    padding: 0 0 80px;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────────── */
+  .cover {
+    background: linear-gradient(180deg, #0E0E22 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 72px 48px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 300px;
+    background: radial-gradient(ellipse, rgba(107,40,238,0.35) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--lime);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .cover h1 {
+    font-family: 'Nunito', system-ui;
+    font-weight: 900;
+    font-size: clamp(42px, 6vw, 72px);
+    color: var(--lime);
+    line-height: 1.0;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+  }
+  .cover h1 span { color: var(--white); }
+  .cover-sub {
+    font-size: 18px;
+    color: #C0C0C0;
+    margin-bottom: 36px;
+    font-weight: 600;
+  }
+  .cover-badges {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .badge-violet { background: rgba(200,255,0,0.08); border: 1px solid rgba(200,255,0,0.4); color: var(--lime); }
+  .badge-lime   { background: rgba(200,255,0,0.12); border: 1px solid var(--lime);   color: var(--lime); }
+  .badge-muted  { background: rgba(180,180,180,0.08); border: 1px solid rgba(180,180,180,0.3); color: #B0B0B0; }
+
+  /* ── LAYOUT ─────────────────────────────────────────────── */
+  .container { max-width: 980px; margin: 0 auto; padding: 0 32px; }
+
+  /* ── SECTION ─────────────────────────────────────────────── */
+  .section { padding: 56px 0 0; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--lime);
+    background: rgba(200,255,0,0.08);
+    border: 1px solid rgba(200,255,0,0.3);
+    border-radius: 6px;
+    padding: 4px 10px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-weight: 900;
+    font-size: 26px;
+    color: #FFFFFF;
+    letter-spacing: -0.3px;
+  }
+
+  /* ── CALLOUT ─────────────────────────────────────────────── */
+  .callout {
+    background: rgba(107,40,238,0.12);
+    border-left: 4px solid var(--violet);
+    border-radius: 0 12px 12px 0;
+    padding: 18px 22px;
+    margin: 20px 0;
+    font-size: 15px;
+    color: var(--white);
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .callout.lime {
+    background: rgba(200,255,0,0.06);
+    border-left-color: var(--lime);
+    font-style: normal;
+    color: #E8F8A0;
+  }
+  .callout.warn {
+    background: rgba(250,204,21,0.08);
+    border-left-color: #FACC15;
+    color: #FEF3C7;
+    font-style: normal;
+  }
+  .callout.critical {
+    background: rgba(248,113,113,0.08);
+    border-left-color: #F87171;
+    color: #FEE2E2;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  /* ── H2 / H3 ─────────────────────────────────────────────── */
+  h2 {
+    font-weight: 900;
+    font-size: 18px;
+    color: var(--lime);
+    margin: 32px 0 12px;
+    letter-spacing: -0.2px;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+  }
+  h3 {
+    font-weight: 800;
+    font-size: 16px;
+    color: #FFFFFF;
+    margin: 22px 0 10px;
+  }
+  p { font-size: 15px; color: rgba(240,240,240,0.85); margin-bottom: 12px; font-weight: 600; line-height: 1.65; }
+
+  /* ── TABLES ─────────────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; margin: 16px 0 24px; border-radius: 14px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead tr { background: rgba(107,40,238,0.15); }
+  thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--lime);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  tbody tr { border-bottom: 1px solid rgba(180,160,255,0.08); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+  td {
+    padding: 11px 16px;
+    color: rgba(240,240,240,0.88);
+    font-weight: 600;
+    font-size: 14px;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  td:first-child { color: var(--white); font-weight: 700; white-space: nowrap; }
+  td .mono { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--lime); }
+  td .pill {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 2px 9px;
+    border-radius: 100px;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .pill-v { background: rgba(107,40,238,0.2); color: var(--violet); border: 1px solid rgba(107,40,238,0.4); }
+  .pill-l { background: rgba(200,255,0,0.1); color: var(--lime); border: 1px solid rgba(200,255,0,0.3); }
+  .pill-g { background: rgba(74,222,128,0.1); color: #4ADE80; border: 1px solid rgba(74,222,128,0.3); }
+  .pill-a { background: rgba(250,204,21,0.1); color: #FACC15; border: 1px solid rgba(250,204,21,0.3); }
+  .pill-r { background: rgba(248,113,113,0.1); color: #F87171; border: 1px solid rgba(248,113,113,0.3); }
+
+  /* ── RULE ─────────────────────────────────────────────────── */
+  .rule { border: none; border-top: 1px solid var(--border); margin: 48px 0 0; }
+
+  /* ── CODE BLOCK ─────────────────────────────────────────────── */
+  .code-block {
+    background: #0E0E22;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--lime);
+    line-height: 1.8;
+    margin: 16px 0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .code-block .comment { color: var(--muted); }
+  .code-block .key { color: #C8FF00; }
+  .code-block .val { color: #C8FF00; }
+  .code-block .str { color: #86EFAC; }
+
+  /* ── GRID ─────────────────────────────────────────────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 16px 0; }
+  @media (max-width: 680px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  /* ── CARD ─────────────────────────────────────────────────── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .card h3 { margin: 0 0 10px; font-size: 15px; }
+  .card p { font-size: 13px; margin: 0; }
+
+  /* ── COLOUR SWATCHES ─────────────────────────────────────── */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin: 16px 0; }
+  .swatch {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .swatch-color { height: 48px; }
+  .swatch-info { padding: 10px 12px; background: var(--card); }
+  .swatch-name { font-size: 12px; font-weight: 800; color: var(--white); }
+  .swatch-hex { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--lime); margin-top: 2px; }
+  .swatch-use { font-size: 11px; color: #A0A0A0; margin-top: 3px; font-weight: 600; }
+
+  /* ── EXPRESSION CARDS ─────────────────────────────────────── */
+  .expression-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 16px 0; }
+  @media (max-width: 700px) { .expression-grid { grid-template-columns: repeat(3, 1fr); } }
+  .expr-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 12px;
+    text-align: center;
+  }
+  .expr-face {
+    width: 64px; height: 64px;
+    margin: 0 auto 12px;
+    position: relative;
+  }
+  .expr-name { font-size: 13px; font-weight: 900; color: var(--white); margin-bottom: 4px; }
+  .expr-trigger { font-size: 11px; color: #A0A0A0; font-weight: 600; line-height: 1.4; }
+
+  /* ── SCREEN CARDS ─────────────────────────────────────────── */
+  .screen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin: 16px 0; }
+  .screen-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    transition: border-color 0.2s;
+  }
+  .screen-card:hover { border-color: rgba(107,40,238,0.5); }
+  .screen-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .screen-num { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--lime); background: rgba(200,255,0,0.08); border: 1px solid rgba(200,255,0,0.25); border-radius: 6px; padding: 3px 8px; flex-shrink: 0; }
+  .screen-name { font-weight: 900; font-size: 15px; }
+  .screen-phase { font-family: 'Space Mono', monospace; font-size: 10px; padding: 3px 8px; border-radius: 100px; margin-left: auto; flex-shrink: 0; }
+  .phase-mvp { background: rgba(74,222,128,0.1); color: #4ADE80; border: 1px solid rgba(74,222,128,0.3); }
+  .phase-2 { background: rgba(107,40,238,0.15); color: #A78BFA; border: 1px solid rgba(107,40,238,0.4); }
+  .screen-troll { font-size: 12px; color: var(--lime); font-weight: 700; margin-bottom: 8px; }
+  .screen-desc { font-size: 13px; color: rgba(240,240,240,0.75); font-weight: 600; line-height: 1.55; }
+  .screen-elements { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .screen-el { font-size: 11px; font-family: 'Space Mono', monospace; color: #A0A0A0; background: rgba(180,180,180,0.07); border: 1px solid rgba(180,180,180,0.18); border-radius: 6px; padding: 3px 8px; }
+
+  /* ── PROMPT BLOCK ─────────────────────────────────────────── */
+  .prompt-block {
+    background: #080814;
+    border: 1px solid var(--violet);
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 24px 0;
+  }
+  .prompt-header {
+    background: rgba(107,40,238,0.2);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .prompt-header span { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--lime); font-weight: 700; letter-spacing: 1px; }
+  .prompt-body {
+    padding: 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.9;
+    color: rgba(240,240,240,0.9);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .prompt-section { color: #C8FF00; font-weight: 700; }
+  .prompt-comment { color: #9B8BC4; }
+  .prompt-value { color: #C8FF00; }
+
+  /* ── BULLETS ─────────────────────────────────────────────── */
+  .bullets { margin: 12px 0 16px 0; }
+  .bullets li {
+    list-style: none;
+    padding: 5px 0 5px 22px;
+    position: relative;
+    font-size: 14px;
+    color: rgba(240,240,240,0.85);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .bullets li::before {
+    content: '·';
+    position: absolute;
+    left: 6px;
+    color: var(--lime);
+    font-weight: 900;
+    font-size: 18px;
+    top: 2px;
+  }
+
+  /* ── DIVIDER SECTION ─────────────────────────────────────── */
+  .section-divider {
+    text-align: center;
+    margin: 64px 0 0;
+    padding: 0 32px;
+    position: relative;
+  }
+  .section-divider::before {
+    content: '';
+    display: block;
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 24px;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ══════════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <p class="cover-eyebrow">Master Design Briefing · v1.0 · June 2026</p>
+  <h1>KUN TROLL <span>—</span><br>Homeware Hub</h1>
+  <p class="cover-sub">Complete design system, character spec, and screen-by-screen prompt guide for Claude</p>
+  <div class="cover-badges">
+    <span class="badge badge-violet">Universal Remote · iPhone</span>
+    <span class="badge badge-lime">AI-Powered · Troll Scout</span>
+    <span class="badge badge-violet">Dark-First · Violet + Lime</span>
+    <span class="badge badge-muted">Benchmark: Roomie Remote X</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ══ 1. HOW TO USE ═══════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">00</span>
+    <span class="section-title">How to Use This Document</span>
+  </div>
+  <div class="callout lime">
+    This is the single source of truth for every Claude design session on Kun Troll. Paste Section 10 (the Master Prompt) at the start of any conversation. Then replace the bracketed fields for the specific screen you need. Everything else in this document provides the deep context behind each rule.
+  </div>
+  <p>This briefing contains three things Claude needs to design any screen for this app: (1) a locked character specification so Kun Troll looks identical everywhere, (2) a complete visual design system with zero ambiguity, and (3) per-screen descriptions for all 14 screens with exact elements, states, and interaction rules.</p>
+</div>
+
+<hr class="rule">
+
+<!-- ══ 2. PRODUCT CONTEXT ═════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <span class="section-title">Product Context</span>
+  </div>
+  <div class="callout">Kun Troll — Homeware Hub is a universal home remote controller for iPhone. It replaces every physical remote in the house with a single, character-driven interface. The benchmark is Roomie Remote X (400K+ devices, the category leader). Kun Troll matches its depth and exceeds it in three areas: AI-assisted device discovery (Troll Scout), onboarding personality, and visual identity.</div>
+
+  <h2>The Three Pillars</h2>
+  <div class="grid-3">
+    <div class="card">
+      <h3 style="color:#C8FF00">AI-First</h3>
+      <p>Troll Scout automatically searches the web for device commands when a device has no library match. Users never hit a dead end.</p>
+    </div>
+    <div class="card">
+      <h3 style="color:#C8FF00">Character-Driven</h3>
+      <p>Kun Troll is present throughout — in onboarding, success states, errors, idle screens. The app has a personality. Not a mascot.</p>
+    </div>
+    <div class="card">
+      <h3 style="color:#C8FF00">Visually Distinctive</h3>
+      <p>Dark violet and lime. Rounded shapes. Space Mono for data. A look that says premium without saying corporate.</p>
+    </div>
+  </div>
+
+  <h2>Confirmed Devices (Reference in All UI Copy)</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Device</th><th>Model</th><th>Protocol</th></tr></thead>
+      <tbody>
+        <tr><td>Samsung TV</td><td>QE75QN800BT</td><td>SmartThings / LAN WebSocket port 8001</td></tr>
+        <tr><td>Yamaha Receiver</td><td>RX-A870</td><td>MusicCast REST API port 80</td></tr>
+        <tr><td>Philips Hue (×2 bridges)</td><td>Hue Bridge v2</td><td>Hue Local API v2 — dual bridge</td></tr>
+        <tr><td>Apple TV</td><td>Apple TV 4K</td><td>MediaRemoteTV / HomeKit</td></tr>
+        <tr><td>IR Gateway</td><td>Global Caché iTach Wi-Fi2IR</td><td>TCP/IP → IR port 4998, default IP 169.254.1.70</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Pre-Built Scenes (Use These Names Verbatim)</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Scene</th><th>What It Does</th></tr></thead>
+      <tbody>
+        <tr><td>Cinema</td><td>Hue dim warm → Receiver on HDMI1 → TV on → Apple TV wake → Volume 35</td></tr>
+        <tr><td>Good Night</td><td>Apple TV sleep → TV off → Receiver off → Bedroom Hue 5% warm → All other lights off</td></tr>
+        <tr><td>Good Morning</td><td>Living room Hue 80% cool → Apple TV wake → TV on Apple TV</td></tr>
+        <tr><td>Music</td><td>Receiver on AirPlay → Stereo mode → Hue 60% warm → Apple TV Music app</td></tr>
+        <tr><td>All Off</td><td>Apple TV sleep → TV off → Receiver off → All Hue lights off (both bridges)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- ══ 3. CHARACTER SPECIFICATION ════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <span class="section-title">Character Specification — Kun Troll</span>
+  </div>
+
+  <div class="callout warn">⚠ This specification is locked. Every element below is final. Do not improvise, simplify, or add features not listed. Kun Troll must look identical across every screen, widget, and onboarding step.</div>
+
+  <h2>Anatomy — Build Exactly This</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Part</th><th>Exact Specification</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Head shape</td>
+          <td>Wide oval — wider than it is tall. Horizontal stretch roughly 1.4× the vertical. Low-slung, grounded proportions. NOT a circle, NOT a tall oval. Think "friendly pebble."</td>
+        </tr>
+        <tr>
+          <td>Hair spikes</td>
+          <td>Exactly <strong>3</strong> upward-pointing spikes on top of the head. Medium thickness — not thin needles, not thick blobs. Slight forward lean. Troll signature. Do not add more or fewer.</td>
+        </tr>
+        <tr>
+          <td>Ears</td>
+          <td>Small pointed troll ears, one on each side of the head. Positioned low — roughly at the midpoint of the head height. Slightly angled outward. Do not enlarge them.</td>
+        </tr>
+        <tr>
+          <td>Eyes</td>
+          <td>Two large circular eyes that sit <strong>close together</strong> (not wide apart). Each eye: white sclera → <span class="mono">#C8FF00</span> lime-green iris (large, fills most of the eye) → dark circular pupil centred → single small white highlight dot at top-right of the pupil. The iris should feel bright and alive.</td>
+        </tr>
+        <tr>
+          <td>Mouth</td>
+          <td>Gentle upward curved smile. No teeth visible. Width approximately 40% of the head width. Default state is always a smile. Only Sleepy gets a slight downturn.</td>
+        </tr>
+        <tr>
+          <td>Eyebrows</td>
+          <td><strong>NONE.</strong> Do not add eyebrows. Do not add brow ridges. Zero.</td>
+        </tr>
+        <tr>
+          <td>Nose</td>
+          <td><strong>NONE.</strong> Do not add a nose, nostrils, or nose line. Zero.</td>
+        </tr>
+        <tr>
+          <td>Body</td>
+          <td><strong>Head only.</strong> No neck, no torso, no arms, no legs. The character is a floating head with hair. This is intentional and iconic.</td>
+        </tr>
+        <tr>
+          <td>Fill colour</td>
+          <td>Skin: <span class="mono">#6B28EE</span> violet. Eyes: <span class="mono">#C8FF00</span> lime. No gradients on the character skin. Flat fill with outline.</td>
+        </tr>
+        <tr>
+          <td>Outline</td>
+          <td>1.5–2px dark <span class="mono">#1A1A2E</span> outline on all shapes. Clean and consistent weight.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>The 5 Expressions — Use Only These</h2>
+  <p>No other expressions exist. If a new product state requires an expression, define it here first. Do not improvise.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Expression</th><th>Exact Visual Changes</th><th>When to Use</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="pill pill-g">Happy</span></td>
+          <td>Eyes fully open and bright. Full curved smile. Character floats gently. This is the neutral/default state — every screen that doesn't specify an expression uses Happy.</td>
+          <td>App open, home dashboard, device online, command sent, general navigation</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-l">Wow</span></td>
+          <td>Eyes enlarged to ~130% of normal size. Mouth open in a rounded "O" shape (not a smile, not a frown — pure surprise). Character leans slightly back. Trigger a scale pulse: 1.0 → 1.15 → 1.0 in 200ms.</td>
+          <td>Device discovered, Troll Scout finds commands, scene fires successfully with all devices responding</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-v">Wink</span></td>
+          <td>Right eye is closed (simple curved line). Left eye remains fully open. Head tilts a few degrees to the right. Playful and knowing. Blink animation does NOT apply — the eye stays closed.</td>
+          <td>Troll Scout actively searching, scene saved/confirmed, onboarding step completed</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-a">Sleepy</span></td>
+          <td>Both eyelids drooped to 60% closed (upper lid covers top 60% of the eye). Eyes are still visible but heavy. Mouth slightly downturned — not a frown, just neutral. Overall droop effect. Transition in slowly: 1s ease-in.</td>
+          <td>Device offline, command failed, idle 5+ minutes, not found states</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-r">Love</span></td>
+          <td>Eyes replaced with sparkle/star shapes (4-point star or heart outline — not filled circles). Huge smile, slightly wider than default. Small floating hearts above the head (2–3 hearts, different sizes). Scale pulse on entrance.</td>
+          <td>Onboarding complete, first ever scene fired, user returns after 7+ days away</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Animation Rules</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Animation</th><th>Parameters</th><th>Where It Applies</th></tr></thead>
+      <tbody>
+        <tr><td>Float</td><td>translateY: 0 to –8px. Duration 4s. ease-in-out. Infinite loop.</td><td>Always. Every state. Continuous whenever Kun Troll is visible.</td></tr>
+        <tr><td>Blink</td><td>Lids close in 80ms, open in 120ms. Trigger randomly every 5–7s.</td><td>Happy and Wink only. Not Wow (eyes too wide). Not Sleepy (already drooped).</td></tr>
+        <tr><td>Expression change</td><td>Spring physics. Stiffness 200, damping 20. ~300ms transition.</td><td>Any change between expressions. Never cut abruptly.</td></tr>
+        <tr><td>Entrance</td><td>Scale 0.6 → 1.0 with spring, fade in simultaneously.</td><td>Whenever Kun Troll first appears on a screen.</td></tr>
+        <tr><td>Reaction pulse</td><td>Scale 1.0 → 1.15 → 1.0 in 200ms on spring. One-time.</td><td>Wow and Love expression triggers only.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Placement Rules</h2>
+  <ul class="bullets">
+    <li><strong>Hero zone:</strong> Top 30% of screen, horizontally centred. Full-size (120–160pt diameter). Used on: Home Dashboard, Onboarding all steps, Troll Scout screens.</li>
+    <li><strong>Corner badge:</strong> 40×40pt circle version, anchored bottom-right of the screen content area (above tab bar). Used on all remote view screens (TV, Receiver, Lighting, Apple TV). Winks on command success.</li>
+    <li><strong>Empty state:</strong> Centred, Sleepy expression, helper text directly below. Never leave an empty state with just text and no character.</li>
+    <li><strong>Loading state:</strong> Wink expression, subtle hat spike rotation animation, "Searching..." label below in Space Mono.</li>
+    <li>Character always renders <strong>on top</strong> of all other UI elements. Never clip or place behind cards.</li>
+    <li>Minimum size: 48pt diameter. At this size only eyes and smile are legible — this is acceptable.</li>
+    <li>Glow effect: radial gradient <span style="font-family:monospace;color:#C8FF00">rgba(107,40,238,0.3) → transparent</span>, radius 80pt, centred on the character. Applied only in hero zone. Not on corner badge. Not anywhere else.</li>
+  </ul>
+</div>
+
+<hr class="rule">
+
+<!-- ══ 4. VISUAL DESIGN SYSTEM ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <span class="section-title">Visual Design System</span>
+  </div>
+
+  <div class="callout critical">🚫 Dark theme only. Light mode does not exist for this app. Do not add light theme variants or conditionals. Every surface must use the tokens below.</div>
+
+  <h2>Colour Tokens</h2>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#1A1A2E"></div><div class="swatch-info"><div class="swatch-name">background</div><div class="swatch-hex">#1A1A2E</div><div class="swatch-use">All screen backgrounds</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#252540"></div><div class="swatch-info"><div class="swatch-name">card</div><div class="swatch-hex">#252540</div><div class="swatch-use">Cards, panels, sheets</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#6B28EE"></div><div class="swatch-info"><div class="swatch-name">primary</div><div class="swatch-hex">#6B28EE</div><div class="swatch-use">Buttons, Troll fill, active tab</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#5A20CC"></div><div class="swatch-info"><div class="swatch-name">primary-deep</div><div class="swatch-hex">#5A20CC</div><div class="swatch-use">Pressed, secondary surface</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#C8FF00"></div><div class="swatch-info"><div class="swatch-name">accent-lime</div><div class="swatch-hex">#C8FF00</div><div class="swatch-use">Eyes, active indicators</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F0F0F0"></div><div class="swatch-info"><div class="swatch-name">text-primary</div><div class="swatch-hex">#F0F0F0</div><div class="swatch-use">Body copy, labels, icons</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#9B8BC4"></div><div class="swatch-info"><div class="swatch-name">text-secondary</div><div class="swatch-hex">#9B8BC4</div><div class="swatch-use">Captions, timestamps</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#4ADE80"></div><div class="swatch-info"><div class="swatch-name">success</div><div class="swatch-hex">#4ADE80</div><div class="swatch-use">Confirmed, passed</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#FACC15"></div><div class="swatch-info"><div class="swatch-name">warning</div><div class="swatch-hex">#FACC15</div><div class="swatch-use">Partial fail, offline</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F87171"></div><div class="swatch-info"><div class="swatch-name">error</div><div class="swatch-hex">#F87171</div><div class="swatch-use">Command failed</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:rgba(180,160,255,0.18); border: 1px dashed rgba(180,160,255,0.4)"></div><div class="swatch-info"><div class="swatch-name">card-border</div><div class="swatch-hex">rgba(180,160,255,0.18)</div><div class="swatch-use">Card outlines</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:radial-gradient(circle, rgba(107,40,238,0.5) 0%, transparent 70%)"></div><div class="swatch-info"><div class="swatch-name">glow-violet</div><div class="swatch-hex">rgba(107,40,238,0.3)</div><div class="swatch-use">Character glow only</div></div></div>
+  </div>
+
+  <h2>Typography</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Level</th><th>Font</th><th>Weight · Size</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td>Display</td><td>Nunito</td><td>900 · 34–40pt</td><td>App name on onboarding, hero scene names</td></tr>
+        <tr><td>Heading 1</td><td>Nunito</td><td>900 · 28pt</td><td>Screen titles, section headers</td></tr>
+        <tr><td>Heading 2</td><td>Nunito</td><td>800 · 22pt</td><td>Card titles, subsection headers</td></tr>
+        <tr><td>Body</td><td>Nunito</td><td>700 · 17pt</td><td>All body copy. Minimum weight is 700.</td></tr>
+        <tr><td>Caption</td><td>Nunito</td><td>600 · 13pt</td><td>Timestamps, room names, secondary labels</td></tr>
+        <tr><td>Data / Label</td><td style="color:#C8FF00;font-weight:800">Space Mono</td><td>700 · 15pt</td><td>Volume numbers, IP addresses, port numbers, command codes, confidence scores</td></tr>
+        <tr><td>Data Small</td><td style="color:#C8FF00;font-weight:800">Space Mono</td><td>700 · 12pt</td><td>Source badges (manual / library / ai_fetched), status chips</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="bullets">
+    <li>Never use San Francisco (system default). Nunito must be used throughout.</li>
+    <li>Space Mono is used <strong>exclusively</strong> for data, numbers, and technical labels. Never for general UI copy.</li>
+    <li>Line height: 1.4× body, 1.2× display/headings. Letter spacing: –0.3px display/H1, 0px body, +0.5px captions.</li>
+  </ul>
+
+  <h2>Spacing System</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Token</th><th>Value</th><th>Where</th></tr></thead>
+      <tbody>
+        <tr><td>xs</td><td>4pt</td><td>Icon-to-label gap, badge internal padding</td></tr>
+        <tr><td>sm</td><td>8pt</td><td>Button vertical padding, label margins</td></tr>
+        <tr><td>md</td><td>16pt</td><td>Card internal padding, list item vertical padding</td></tr>
+        <tr><td>lg</td><td>24pt</td><td>Section spacing, card-to-card gap</td></tr>
+        <tr><td>xl</td><td>32pt</td><td>Screen edge margins, hero zone padding</td></tr>
+        <tr><td>2xl</td><td>48pt</td><td>Breathing room above and below Kun Troll</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Corner Radius</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Component</th><th>Radius</th></tr></thead>
+      <tbody>
+        <tr><td>Modals / bottom sheets</td><td>28pt (top corners only)</td></tr>
+        <tr><td>Cards (device, scene, room)</td><td>20pt all corners</td></tr>
+        <tr><td>Primary buttons</td><td>100pt — full pill. Always.</td></tr>
+        <tr><td>Secondary buttons</td><td>14pt</td></tr>
+        <tr><td>Input fields</td><td>12pt</td></tr>
+        <tr><td>Badges / chips / source labels</td><td>100pt pill</td></tr>
+        <tr><td>Remote control buttons (D-pad etc.)</td><td>10pt</td></tr>
+        <tr><td>Character glow circle</td><td>100pt (circular)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Shadows & Elevation</h2>
+  <ul class="bullets">
+    <li><strong>Cards:</strong> offset (0, 4pt), blur 12pt, rgba(0,0,0,0.4) — heavy shadows are required on dark backgrounds to register.</li>
+    <li><strong>Bottom tab bar:</strong> offset (0, –2pt), blur 20pt, rgba(0,0,0,0.6) — separates nav from content.</li>
+    <li><strong>Modals:</strong> offset (0, –8pt), blur 32pt, rgba(0,0,0,0.8).</li>
+    <li><strong>Character glow:</strong> radial gradient rgba(107,40,238,0.3) → transparent, radius 80pt. Hero zone only.</li>
+  </ul>
+
+  <h2>Tab Bar</h2>
+  <ul class="bullets">
+    <li>5 tabs: <strong>Home · Rooms · Remote · Scenes · Settings</strong></li>
+    <li>Height: 83pt including safe area padding (iPhone 15 Pro).</li>
+    <li>Background: #1A1A2E with top blur (ultraThinMaterialDark).</li>
+    <li>Selected tab: lime <span style="font-family:monospace;color:#C8FF00">#C8FF00</span> icon tint + label. Unselected: <span style="font-family:monospace;color:#9B8BC4">#9B8BC4</span>.</li>
+    <li>Active indicator: 2pt lime underline dot centred below icon.</li>
+  </ul>
+</div>
+
+<hr class="rule">
+
+<!-- ══ 5. LAYOUT RULES ════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <span class="section-title">Layout Rules</span>
+  </div>
+  <ul class="bullets">
+    <li><strong>Target device:</strong> iPhone 15 Pro — 390×844pt. Design to this canvas.</li>
+    <li><strong>Hero zone:</strong> Top 30% (roughly 0–253pt from top). Kun Troll + key headline live here.</li>
+    <li><strong>Interaction zone:</strong> Bottom 60% of screen. All tappable primary actions must be thumb-reachable here.</li>
+    <li><strong>Safe areas:</strong> Top 59pt (Dynamic Island), bottom 34pt. Nothing critical behind safe areas.</li>
+    <li><strong>Screen edge margins:</strong> 20–24pt left and right. Consistent.</li>
+    <li><strong>Numeric data:</strong> Always Space Mono. Volume levels, IP addresses, port numbers, command codes.</li>
+    <li><strong>Cards:</strong> Full-width minus edge margins. 16pt internal padding. 20pt corner radius. Card border rgba(180,160,255,0.18).</li>
+    <li><strong>No gradients on backgrounds.</strong> The background is flat #1A1A2E. Only the character glow uses a gradient.</li>
+    <li>Swipe left/right on Remote tab to navigate between devices in the same room.</li>
+    <li>Long press on Room card reveals a quick scene launcher overlay.</li>
+    <li>Long press on a command button reveals command details (name, source, confidence).</li>
+  </ul>
+</div>
+
+<hr class="rule">
+
+<!-- ══ 6. TROLL SCOUT ══════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <span class="section-title">Troll Scout — AI Feature (Phase 2)</span>
+  </div>
+  <div class="callout">Troll Scout is the AI layer that searches the web for device control commands when a device has no match in the local library. It is the biggest differentiator vs. Roomie Remote X. No mainstream remote app does this.</div>
+
+  <h2>What It Does</h2>
+  <ul class="bullets">
+    <li>Triggered automatically when a discovered device has no library match.</li>
+    <li>Claude API (claude-sonnet-4-20250514) + web_search searches manufacturer docs, IRDB.tk, RemoteCentral, GitHub, Home Assistant.</li>
+    <li>Extracts and normalises commands into the app's schema. Assigns confidence score per source.</li>
+    <li>Presents results for user review — commands never fire automatically.</li>
+  </ul>
+
+  <div class="callout critical">🔒 CRITICAL GUARDRAIL: AI-fetched commands are NEVER executed automatically. NEVER saved without explicit user confirmation. The confirmation screen is mandatory and cannot be bypassed. This must be visually clear in every Troll Scout screen.</div>
+
+  <h2>Command Source Badges (Space Mono · Pill)</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Badge Text</th><th>Colour</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill pill-g">manual</span></td><td>#4ADE80 green</td><td>User entered this command themselves</td></tr>
+        <tr><td><span class="pill pill-l">library</span></td><td>#C8FF00 lime</td><td>From the built-in device library</td></tr>
+        <tr><td><span class="pill pill-v">ai_fetched</span></td><td>#A78BFA violet</td><td>Found by Troll Scout — requires confirmation</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Confidence Dots</h2>
+  <p>Each command row shows 3 dots filled based on confidence score. 3 dots = official docs (0.9+). 2 dots = community source (0.6–0.89). 1 dot = forum/unverified (below 0.6). Dots use lime when filled, muted when empty.</p>
+
+  <h2>Troll Scout Expression Flow</h2>
+  <ul class="bullets">
+    <li><strong>Searching:</strong> Wink expression. Spikes rotate subtly. Text cycles source names: "Searching IRDB... Checking manufacturer docs..."</li>
+    <li><strong>Found:</strong> Wow expression + pulse. "Found 47 commands for Yamaha RX-A870"</li>
+    <li><strong>User confirms all:</strong> Happy expression. "Device is ready!"</li>
+    <li><strong>Not found:</strong> Sleepy expression. "Troll Scout couldn't find commands for this device." Manual entry CTA below.</li>
+  </ul>
+</div>
+
+<hr class="rule">
+
+<!-- ══ 7. SCREEN INVENTORY ════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <span class="section-title">Screen Inventory — All 14 Screens</span>
+  </div>
+  <p>Every screen below must have: Kun Troll in the specified expression/placement, correct tab bar active state, and real placeholder data from the device/scene list above.</p>
+
+  <div class="screen-grid">
+
+    <!-- Screen 1 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">01</span>
+        <span class="screen-name">Home Dashboard</span>
+        <span class="screen-phase phase-mvp">MVP</span>
+      </div>
+      <div class="screen-troll">Kun Troll: Happy · Hero zone · floating</div>
+      <div class="screen-desc">Time-based greeting ("Good evening, Pedro"). Active device strip scrolls horizontally: Samsung TV (HDMI1, muted), Yamaha RX-A870 (Vol 35), Hue (2 bridges, living room on). 2×2 favourite scenes grid below: Cinema, Good Night, Music, All Off. Room summary cards at bottom. Tap any scene fires it directly.</div>
+      <div class="screen-elements">
+        <span class="screen-el">greeting</span>
+        <span class="screen-el">device strip</span>
+        <span class="screen-el">2×2 scenes</span>
+        <span class="screen-el">room cards</span>
+        <span class="screen-el">Home tab active</span>
+      </div>
+    </div>
+
+    <!-- Screen 2 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">02</span>
+        <span class="screen-name">Room View</span>
+        <span class="screen-phase phase-mvp">MVP</span>
+      </div>
+      <div class="screen-troll">Kun Troll: Happy · corner badge</div>
+      <div class="screen-desc">Room header: "Living Room" with emoji icon, 3 devices. Device cards: Samsung TV (online, showing current source), Yamaha RX-A870 (volume strip), Philips Hue x2 (brightness %). Quick scene row scrolling horizontally: Cinema, Good Night. Master Hue control at bottom.</div>
+      <div class="screen-elements">
+        <span class="screen-el">room header</span>
+        <span class="screen-el">device cards</span>
+        <span class="screen-el">scene strip</span>
+        <span class="screen-el">hue master</span>
+        <span class="screen-el">Rooms tab active</span>
+      </div>
+    </div>
+
+    <!-- Screen 3 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">03</span>
+        <span class="screen-name">TV Remote</span>
+        <span class="screen-phase phase-mvp">MVP</span>
+      </div>
+      <div class="screen-troll">Kun Troll: Wink · corner badge (winks on success)</div>
+      <div class="screen-desc">Samsung QE75QN800BT remote. Top: Power + live readout ("HDMI1 · Vol 42" in Space Mono). Large navigation D-pad centred. Volume +/- with mute. Source picker button. Playback row. Shortcut row: Netflix, YouTube, Home, Settings. All buttons 10pt radius, violet fill active.</div>
+      <div class="screen-elements">
+        <span class="screen-el">power</span>
+        <span class="screen-el">D-pad</span>
+        <span class="screen-el">vol+mute</span>
+        <span class="screen-el">source</span>
+        <span class="screen-el">playback</span>
+        <span class="screen-el">shortcuts</span>
+        <span class="screen-el">live readout</span>
+      </div>
+    </div>
+
+    <!-- Screen 4 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">04</span>
+        <span class="screen-name">Receiver Remote</span>
+        <span class="screen-phase phase-mvp">MVP</span>
+      </div>
+      <div class="screen-troll">Kun Troll: Wink · corner badge</div>
+      <div class="screen-desc">Yamaha RX-A870 remote. Volume as the hero element — large +/– buttons dominate the centre. Visual volume bar showing 0–100% (current: 35%). Space Mono for dB value. Input picker button ("Apple TV"). Sound Mode selector (Movie/Music/Sport/Game/Straight). Mute. Zone 2 expandable section at bottom.</div>
+      <div class="screen-elements">
+        <span class="screen-el">volume hero</span>
+        <span class="screen-el">vol bar</span>
+        <span class="screen-el">input picker</span>
+        <span class="screen-el">sound mode</span>
+        <span class="screen-el">mute</span>
+        <span class="screen-el">zone 2</span>
+      </div>
+    </div>
+
+    <!-- Screen 5 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">05</span>
+        <span class="screen-name">Lighting Control</span>
+        <span class="screen-phase phase-mvp">MVP</span>
+      </div>
+      <div class="screen-troll">Kun Troll: Happy · corner badge</div>
+      <div class="screen-desc">Bridge selector pill toggle at top ("Bridge 1 · Bridge 2"). Room tab strip: Living Room, Bedroom, Kitchen. Individual light rows: name, on/off toggle (lime when on), brightness slider, colour temp strip. Master brightness slider for all in room. Hue scene row: Relax, Concentrate, Energize, custom. Tap any light for RGB colour wheel modal.</div>
+      <div class="screen-elements">
+        <span class="screen-el">bridge toggle</span>
+        <span class="screen-el">room tabs</span>
+        <span class="screen-el">light list</span>
+        <span class="screen-el">master slider</span>
+        <span class="screen-el">scene row</span>
+        <span class="screen-el">colour wheel</span>
+      </div>
+    </div>
+
+    <!-- Screen 6 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">06</span>
+        <span class="screen-name">Scene Builder</span>
+        <span class="screen-phase phase-mvp">MVP</span>
+      </div>
+      <div class="screen-troll">Kun Troll: Wink on Test Run · corner badge</div>
+      <div class="screen-desc">Editable scene name at top. Ordered list of command steps: each row has drag handle, device icon, device name, command name, delay badge (e.g. "500ms"). Swipe left to delete. "+" Add Step button. Inter-step delay configurable per step (100ms–5s). "Test Run" button fires the scene live with step overlay: each step shows spinner → check/X. Save requires name + 2 steps minimum.</div>
+      <div class="screen-elements">
+        <span class="screen-el">name field</span>
+        <span class="screen-el">step list</span>
+        <span class="screen-el">drag handles</span>
+        <span class="screen-el">delay badge</span>
+        <span class="screen-el">Test Run CTA</span>
+        <span class="screen-el">step result overlay</span>
+      </div>
+    </div>
+
+    <!-- Screen 7 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">07</span>
+        <span class="screen-name">Scene Library</span>
+        <span class="screen-phase phase-mvp">MVP</span>
+      </div>
+      <div class="screen-troll">Kun Troll: Happy · hero zone</div>
+      <div class="screen-desc">All scenes. Pre-built section first: Cinema, Good Night, Good Morning, Music, All Off — each as a card with icon, name, step count, last fired time (Space Mono). Custom section below. Each card: play button (tap fires scene), 3-dot menu (edit / duplicate / delete). Heart icon for favouriting. Filter chips: All · Favourites · By Room.</div>
+      <div class="screen-elements">
+        <span class="screen-el">pre-built section</span>
+        <span class="screen-el">custom section</span>
+        <span class="screen-el">scene cards</span>
+        <span class="screen-el">fire button</span>
+        <span class="screen-el">filter chips</span>
+        <span class="screen-el">Scenes tab active</span>
+      </div>
+    </div>
+
+    <!-- Screen 8 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">08</span>
+        <span class="screen-name">Add Device Flow</span>
+        <span class="screen-phase phase-mvp">MVP</span>
+      </div>
+      <div class="screen-troll">Kun Troll: Wow on discovery · Wink during scan</div>
+      <div class="screen-desc">Multi-step modal flow. Step 1: Scanning — Kun Troll Wink, concentric rings animation, source names cycling. Step 2: Found devices as cards — "Samsung QE75QN800BT" with confirm/skip. Step 3: Pairing sub-flow (Hue: link button prompt with 30s countdown; Apple TV: pairing code). Step 4: Name it + assign room. Step 5: Test command. Wow expression on successful discovery.</div>
+      <div class="screen-elements">
+        <span class="screen-el">scan animation</span>
+        <span class="screen-el">found cards</span>
+        <span class="screen-el">pairing sub-flow</span>
+        <span class="screen-el">name + room</span>
+        <span class="screen-el">test command</span>
+      </div>
+    </div>
+
+    <!-- Screen 9 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">09</span>
+        <span class="screen-name">Device Settings</span>
+        <span class="screen-phase phase-mvp">MVP</span>
+      </div>
+      <div class="screen-troll">Kun Troll: Happy · corner badge</div>
+      <div class="screen-desc">Device detail page. Top: device name (editable), model (Space Mono), emoji icon picker, room assignments (multi-select chips). Command list: each command shows name, source badge (manual/library/ai_fetched), confidence dots, Test button. Swipe left to delete. Add command button. Connection info section: IP, port (Space Mono), last seen, Test Connection button with spinner. Diagnostics link at bottom.</div>
+      <div class="screen-elements">
+        <span class="screen-el">device name</span>
+        <span class="screen-el">model readout</span>
+        <span class="screen-el">icon picker</span>
+        <span class="screen-el">room chips</span>
+        <span class="screen-el">command list</span>
+        <span class="screen-el">source badges</span>
+        <span class="screen-el">confidence dots</span>
+      </div>
+    </div>
+
+    <!-- Screen 10 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">10</span>
+        <span class="screen-name">Onboarding (7 steps)</span>
+        <span class="screen-phase phase-mvp">MVP</span>
+      </div>
+      <div class="screen-troll">Kun Troll: All 5 expressions used across steps</div>
+      <div class="screen-desc">Step 1 Welcome: Love → Happy. "The smartest thing in your home. And it knows it." Step 2 Scan: Wink, rings animation, devices appear. Step 3 Confirm: Wow on find, guided pairing. Step 4 Name room: Happy, emoji picker. Step 5 Scene suggestion: Wink, Cinema recommended. Step 6 Test: Wow on success, Love on perfect. Step 7 Done: Love, floating hearts. "You're in control."</div>
+      <div class="screen-elements">
+        <span class="screen-el">7 steps</span>
+        <span class="screen-el">all expressions</span>
+        <span class="screen-el">scan rings</span>
+        <span class="screen-el">pairing flows</span>
+        <span class="screen-el">floating hearts</span>
+        <span class="screen-el">no tab bar</span>
+      </div>
+    </div>
+
+    <!-- Screen 11 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">11</span>
+        <span class="screen-name">Troll Scout — Searching</span>
+        <span class="screen-phase phase-2">Phase 2</span>
+      </div>
+      <div class="screen-troll">Kun Troll: Wink · animated spike rotation</div>
+      <div class="screen-desc">Full-screen modal. Kun Troll Wink in hero with glow. "Troll Scout is searching..." headline. Source names cycling below: "Checking IRDB.tk... Reading manufacturer docs... Searching GitHub..." Each source as a text line with a moving pulse animation. Estimated time badge. Cancel button. Progress does not fake a percentage — it shows genuine source names.</div>
+      <div class="screen-elements">
+        <span class="screen-el">wink hero</span>
+        <span class="screen-el">source cycling</span>
+        <span class="screen-el">pulse animation</span>
+        <span class="screen-el">cancel</span>
+        <span class="screen-el">no tab bar</span>
+      </div>
+    </div>
+
+    <!-- Screen 12 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">12</span>
+        <span class="screen-name">Troll Scout — Results</span>
+        <span class="screen-phase phase-2">Phase 2</span>
+      </div>
+      <div class="screen-troll">Kun Troll: Wow → Happy after confirm</div>
+      <div class="screen-desc">Wow expression with pulse on entry. "Found 47 commands for Yamaha RX-A870". Source summary row. Scrollable command list — each row: command name (bold), source badge (Space Mono pill), 3 confidence dots, Test button. Test button shows spinner → green check (Did that work? Yes/No) → mark confirmed. Bottom bar: "Save confirmed (12)" and "Save all (47)" buttons. Mandatory confirmation flow — no skip.</div>
+      <div class="screen-elements">
+        <span class="screen-el">wow hero</span>
+        <span class="screen-el">command list</span>
+        <span class="screen-el">source badges</span>
+        <span class="screen-el">confidence dots</span>
+        <span class="screen-el">test button</span>
+        <span class="screen-el">confirm CTAs</span>
+      </div>
+    </div>
+
+    <!-- Screen 13 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">13</span>
+        <span class="screen-name">Apple TV Full Remote</span>
+        <span class="screen-phase phase-2">Phase 2</span>
+      </div>
+      <div class="screen-troll">Kun Troll: Wink · corner badge</div>
+      <div class="screen-desc">Top row: Menu/Back, Home button, Screen Mirroring. Large trackpad gesture area (dominant centre — swipe registers as Apple TV navigation). Tap = select. Swipe = directional navigation. Below trackpad: Play/Pause, Volume via CEC, Siri microphone button (prominent). App Switcher button. Mute. The trackpad area should feel spacious — it's the primary input method.</div>
+      <div class="screen-elements">
+        <span class="screen-el">top nav row</span>
+        <span class="screen-el">large trackpad</span>
+        <span class="screen-el">play/pause</span>
+        <span class="screen-el">Siri button</span>
+        <span class="screen-el">vol/mute</span>
+      </div>
+    </div>
+
+    <!-- Screen 14 -->
+    <div class="screen-card">
+      <div class="screen-card-header">
+        <span class="screen-num">14</span>
+        <span class="screen-name">Widget Configuration</span>
+        <span class="screen-phase phase-2">Phase 2</span>
+      </div>
+      <div class="screen-troll">Kun Troll: Happy · hero zone small</div>
+      <div class="screen-desc">Settings sub-screen. Widget size tabs at top: Small · Medium · Large. Live preview of each widget size at correct iPhone proportions. Each slot assignable: scene picker or device control. Small: 1 scene button. Medium: 2 scenes + volume. Large: 4 scenes + 2 device readouts. Lock Screen section below: circular + rectangular + inline widget config. Save button.</div>
+      <div class="screen-elements">
+        <span class="screen-el">size tabs</span>
+        <span class="screen-el">live preview</span>
+        <span class="screen-el">slot assignment</span>
+        <span class="screen-el">lock screen section</span>
+        <span class="screen-el">Settings tab active</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- ══ 8. WHAT TO ALWAYS INCLUDE ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <span class="section-title">What Every Screen Must Have</span>
+  </div>
+  <ul class="bullets">
+    <li>Kun Troll in the correct expression and correct placement (hero zone OR corner badge). No exceptions.</li>
+    <li>Bottom tab bar on all screens except Onboarding and modal flows (Add Device, Troll Scout).</li>
+    <li>Correct active tab highlighted with lime accent and underline dot.</li>
+    <li>All numeric values (volume, IP, port, time, confidence) in Space Mono.</li>
+    <li>Real device names from the confirmed device list — not generic "Device 1".</li>
+    <li>Real scene names — Cinema, Good Night, Good Morning, Music, All Off.</li>
+    <li>Card borders: rgba(180,160,255,0.18). Never a solid line.</li>
+    <li>Character glow (radial violet gradient) in hero zone only. Not on corner badge or empty states.</li>
+    <li>Haptic feedback implied for all command buttons (note in code comments).</li>
+    <li>iPhone 15 Pro safe areas respected — Dynamic Island top 59pt, home indicator 34pt.</li>
+  </ul>
+
+  <h2>What to Never Do</h2>
+  <ul class="bullets">
+    <li>Never add eyebrows or a nose to Kun Troll. Never add a body.</li>
+    <li>Never use light mode or white backgrounds on any screen.</li>
+    <li>Never use San Francisco font. Always Nunito + Space Mono.</li>
+    <li>Never fire an AI-fetched command without showing the confirmation screen first.</li>
+    <li>Never use pure black (#000000) for any background. Always #1A1A2E.</li>
+    <li>Never place the character behind other UI elements. Always in front.</li>
+    <li>Never use the violet glow outside the character hero zone.</li>
+    <li>Never use more than 5 expressions — if you need another, that's a product decision first.</li>
+    <li>Never use generic placeholder names: no "Living Room 1", no "Scene A".</li>
+    <li>Never use 6 spikes on Kun Troll's head. Exactly 3.</li>
+  </ul>
+</div>
+
+<hr class="rule">
+
+<!-- ══ 9. COPY GUIDE ══════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <span class="section-title">UI Copy Guide</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Context</th><th>Copy / Tone</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>Greeting (Home Dashboard)</td><td>Warm, time-aware. First name optional.</td><td>"Good evening." / "Morning — 3 devices ready."</td></tr>
+        <tr><td>Scene confirmed</td><td>Short, confident, no exclamation marks.</td><td>"Cinema scene saved."</td></tr>
+        <tr><td>Scene fired</td><td>Action-confirmed. Present tense.</td><td>"Cinema is on." / "All off."</td></tr>
+        <tr><td>Device offline</td><td>Factual, not apologetic.</td><td>"Samsung TV isn't responding."</td></tr>
+        <tr><td>Command failed</td><td>Clear cause, clear next step.</td><td>"Couldn't reach Yamaha. Check Wi-Fi."</td></tr>
+        <tr><td>Troll Scout searching</td><td>Active, specific source names.</td><td>"Checking IRDB.tk..." / "Reading Yamaha docs..."</td></tr>
+        <tr><td>Troll Scout found</td><td>Specific number. Build trust.</td><td>"Found 47 commands for Yamaha RX-A870."</td></tr>
+        <tr><td>Troll Scout not found</td><td>Honest, give the alternative.</td><td>"Troll Scout couldn't find commands. Add them manually?"</td></tr>
+        <tr><td>Onboarding welcome</td><td>Bold, slightly cheeky. No corporate warmth.</td><td>"The smartest thing in your home. And it knows it."</td></tr>
+        <tr><td>Onboarding done</td><td>Simple ownership transfer.</td><td>"You're in control."</td></tr>
+        <tr><td>Empty state (no scenes)</td><td>Helpful prompt, character-voiced.</td><td>"No scenes yet. Build your first one."</td></tr>
+        <tr><td>Test command result</td><td>Binary. Yes/No. Direct.</td><td>"Did that work?" → "Yes, save it." / "No, try another."</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="bullets">
+    <li>Tone: confident, warm, slightly dry. Never chirpy. Never corporate. Kun Troll has a personality — the copy should too.</li>
+    <li>No exclamation marks except on Love expression celebrations (onboarding complete, first scene).</li>
+    <li>Errors always give the user something to do. Never a dead-end error message.</li>
+  </ul>
+</div>
+
+<hr class="rule">
+
+<!-- ══ 10. MASTER PROMPT ═══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <span class="section-title">Master Design Prompt — Copy This</span>
+  </div>
+  <div class="callout lime">Copy the block below verbatim at the start of any Claude session when requesting a screen design. Replace [NUMBER], [SCREEN NAME], and [EXPRESSION] before sending. The rest is fixed.</div>
+
+  <div class="prompt-block">
+    <div class="prompt-header">
+      <span>MASTER PROMPT · KUN TROLL — HOMEWARE HUB</span>
+      <span>copy verbatim · replace bracketed fields</span>
+    </div>
+    <div class="prompt-body"><span class="prompt-section">── APP CONTEXT ────────────────────────────────────────────────────────</span>
+
+Design Screen <span class="prompt-value">[NUMBER]</span>: <span class="prompt-value">[SCREEN NAME]</span>
+App: <span class="prompt-value">Kun Troll — Homeware Hub</span>. Universal home remote controller for iPhone.
+Benchmark: Roomie Remote X. Match its device depth, exceed it in personality and AI discovery.
+
+<span class="prompt-section">── CHARACTER: KUN TROLL ─────────────────────────────────────────────</span>
+
+Kun Troll is a floating head — no body, no neck, no arms. Render him as an SVG or CSS shape.
+
+HEAD: Wide oval, wider than tall (roughly 1.4:1 ratio). Grounded, friendly, not alien.
+SPIKES: Exactly 3 upward-pointing hair spikes on top. Medium thickness. Slight forward lean.
+EARS: Small pointed troll ears on each side. Low on head. Do not enlarge.
+EYES: Two large circles, sitting CLOSE TOGETHER. Each has:
+  - White sclera (outer)
+  - #C8FF00 lime-green iris (large, dominant)
+  - Dark circular pupil (centred)
+  - Single white highlight dot (top-right of pupil)
+MOUTH: Gentle upward curve. No teeth. Width ~40% of head. Always a smile except Sleepy.
+EYEBROWS: NONE. Zero. Do not add.
+NOSE: NONE. Zero. Do not add.
+FILL: Skin = #6B28EE violet. Eyes = #C8FF00 lime. No gradients on skin.
+OUTLINE: 1.5–2px #1A1A2E dark outline on all shapes.
+ANIMATION: translateY 0→–8px, 4s ease-in-out infinite float. Blink every 5–7s (Happy/Wink only).
+GLOW: radial-gradient(rgba(107,40,238,0.3) → transparent), radius 80pt. Hero zone only.
+
+EXPRESSION FOR THIS SCREEN: <span class="prompt-value">[Happy | Wow | Wink | Sleepy | Love]</span>
+
+  Happy  → eyes fully open, full smile, float. Default.
+  Wow    → eyes 130% enlarged, mouth open O-shape, slight backward lean. Pulse 1.0→1.15→1.0.
+  Wink   → right eye closed (line), head tilts right, left eye open.
+  Sleepy → both lids 60% drooped, slight mouth downturn. 1s ease-in transition.
+  Love   → eyes = star/sparkle shapes, huge smile, 2–3 floating hearts above head.
+
+PLACEMENT FOR THIS SCREEN: <span class="prompt-value">[Hero zone: top 30%, centred | Corner badge: 40×40pt, bottom-right above tab bar]</span>
+
+<span class="prompt-section">── VISUAL DESIGN SYSTEM ─────────────────────────────────────────────</span>
+
+DARK THEME ONLY. No light mode.
+
+Colours:
+  background:    #1A1A2E   (all screens — never pure black)
+  card:          #252540   (cards, panels, sheets)
+  card-border:   rgba(180,160,255,0.18)
+  primary:       #6B28EE   (buttons, active states, Kun Troll fill)
+  primary-deep:  #5A20CC   (pressed state, secondary surfaces)
+  accent-lime:   #C8FF00   (eyes, active indicators — use sparingly)
+  text-primary:  #F0F0F0   (body copy, labels, icons)
+  text-secondary:#9B8BC4   (captions, timestamps, secondary labels)
+  success:       #4ADE80   (confirmed, passed)
+  warning:       #FACC15   (partial failure, offline)
+  error:         #F87171   (command failed)
+
+Typography:
+  Headings / body:  Nunito, weight 900/800/700/600 by level
+  ALL numeric data: Space Mono 700 — volume, IP, ports, codes, confidence scores
+  Status badges:    Space Mono 700 12pt pill chips
+
+Corner radius:
+  Cards: 20pt    |    Buttons: 100pt pill    |    Modals: 28pt (top only)
+  Badges/chips: 100pt pill    |    Remote buttons: 10pt    |    Inputs: 12pt
+
+Spacing:  xs=4  sm=8  md=16  lg=24  xl=32  2xl=48 (pt)
+
+Shadows:
+  Cards: (0, 4pt) blur 12pt rgba(0,0,0,0.4)
+  Tab bar: (0, –2pt) blur 20pt rgba(0,0,0,0.6)
+  Modals: (0, –8pt) blur 32pt rgba(0,0,0,0.8)
+
+No background gradients. The character glow is the only gradient allowed.
+
+<span class="prompt-section">── LAYOUT ────────────────────────────────────────────────────────────</span>
+
+Canvas: iPhone 15 Pro — 390×844pt
+Safe areas: Dynamic Island top 59pt, home indicator bottom 34pt
+Edge margins: 20–24pt left and right
+Hero zone: top 30% (~0–253pt) — Kun Troll + headline
+Interaction zone: bottom 60% — all primary actions thumb-reachable
+
+Tab bar: Home · Rooms · Remote · Scenes · Settings
+  Height: 83pt. Background: #1A1A2E + blur.
+  Active: #C8FF00 icon + label + 2pt lime underline dot.
+  Inactive: #9B8BC4.
+
+Active tab for this screen: <span class="prompt-value">[Home | Rooms | Remote | Scenes | Settings | none (modal/onboarding)]</span>
+
+<span class="prompt-section">── DEVICES & SCENES (use these names verbatim) ──────────────────────</span>
+
+Devices:
+  TV:        Samsung QE75QN800BT  (WebSocket LAN, port 8001)
+  Receiver:  Yamaha RX-A870       (MusicCast REST, port 80)
+  Lighting:  Philips Hue — Bridge 1 + Bridge 2  (Local API v2)
+  Streaming: Apple TV 4K          (MediaRemoteTV / HomeKit)
+  IR Gateway:Global Caché iTach Wi-Fi2IR  (TCP port 4998, IP 169.254.1.70)
+
+Scenes: Cinema · Good Night · Good Morning · Music · All Off · Custom
+
+<span class="prompt-section">── TROLL SCOUT (Phase 2 screens only) ───────────────────────────────</span>
+
+AI feature that searches the web for device commands when no library match found.
+Expression flow: Wink (searching) → Wow (found) → Happy (confirmed) → Sleepy (not found).
+Source badges (Space Mono pill chips):
+  manual     → #4ADE80 green
+  library    → #C8FF00 lime
+  ai_fetched → #A78BFA violet
+Confidence dots: 3 filled = official (0.9+), 2 = community (0.6–0.89), 1 = unverified.
+Per-command Test button: spinner → green check / red X → "Did that work? Yes / No"
+CRITICAL: Commands are NEVER saved or fired without explicit user confirmation.
+
+<span class="prompt-section">── DELIVERABLE ───────────────────────────────────────────────────────</span>
+
+React or HTML artifact at 390×844pt iPhone canvas.
+Show all relevant UI states for this screen.
+Use real placeholder data: device names, scene names, volume levels, IP addresses above.
+Kun Troll must be rendered in the specified expression using SVG, CSS, or canvas.
+All numeric data in Space Mono. All UI copy in Nunito.
+Tab bar present unless this is onboarding or a modal flow.
+Indicate haptic feedback in comments where applicable.
+
+<span class="prompt-section">── SCREEN-SPECIFIC BRIEF ─────────────────────────────────────────────</span>
+
+<span class="prompt-value">[Paste the description for your specific screen from the Screen Inventory above]</span>
+
+<span class="prompt-section">────────────────────────────────────────────────────────────────────</span></div>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- ══ 10. QUICK REFERENCE ════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <span class="section-title">Quick Reference Card</span>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="color:#C8FF00;margin-bottom:14px;">Expression → Context</h3>
+      <p style="font-size:13px;line-height:1.9">
+        <span style="color:#4ADE80;font-weight:800">Happy</span> → Default, online, success<br>
+        <span style="color:#C8FF00;font-weight:800">Wow</span> → Discovery, found, all fired<br>
+        <span style="color:#A78BFA;font-weight:800">Wink</span> → Searching, saved, milestone<br>
+        <span style="color:#FACC15;font-weight:800">Sleepy</span> → Offline, failed, idle 5min<br>
+        <span style="color:#F87171;font-weight:800">Love</span> → Done, first fire, return user
+      </p>
+    </div>
+    <div class="card">
+      <h3 style="color:#C8FF00;margin-bottom:14px;">Placement → Screen Type</h3>
+      <p style="font-size:13px;line-height:1.9">
+        <span style="font-weight:800">Hero zone</span> → Home, Onboarding, Troll Scout, Scene Library<br>
+        <span style="font-weight:800">Corner badge</span> → TV, Receiver, Lighting, Apple TV, Device Settings<br>
+        <span style="font-weight:800">Centred empty</span> → No devices, no scenes, not found<br>
+        <span style="font-weight:800">Loading</span> → Wink + spike rotation + "Searching..."
+      </p>
+    </div>
+    <div class="card">
+      <h3 style="color:#C8FF00;margin-bottom:14px;">Font Usage</h3>
+      <p style="font-size:13px;line-height:1.9">
+        <span style="font-weight:800">Nunito 900</span> → Screen titles, scene names, display<br>
+        <span style="font-weight:800">Nunito 800</span> → Card titles, H2<br>
+        <span style="font-weight:800">Nunito 700</span> → Body copy (minimum weight)<br>
+        <span style="font-family:monospace;color:#C8FF00;font-weight:800">Space Mono</span> → Volume, IP, ports, confidence, badges
+      </p>
+    </div>
+    <div class="card">
+      <h3 style="color:#C8FF00;margin-bottom:14px;">Never Do These</h3>
+      <p style="font-size:13px;line-height:1.9">
+        🚫 Add eyebrows or nose to Troll<br>
+        🚫 Add a body to Troll<br>
+        🚫 Use light/white backgrounds<br>
+        🚫 Use San Francisco font<br>
+        🚫 Use glow outside hero zone<br>
+        🚫 Fire AI command without confirm<br>
+        🚫 Use more than 3 hair spikes
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:72px 32px 0;">
+  <p style="font-size:13px;color:#3D1599;font-weight:700;letter-spacing:0.5px">KUN TROLL — HOMEWARE HUB · Design Briefing v1.0 · June 2026 · Confidential</p>
+  <p style="font-size:12px;color:#252540;margin-top:4px;font-weight:600;font-style:italic">The smartest thing in your home. And it knows it.</p>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>

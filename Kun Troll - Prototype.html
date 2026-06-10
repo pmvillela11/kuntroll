@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kun Troll — Homeware Hub · Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;height:100%;}
+  body{
+    background:#15151c;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Nunito',system-ui,sans-serif;
+    overflow:hidden;
+  }
+  #scaler{transform-origin:center center;}
+  /* hide scrollbars inside app */
+  ::-webkit-scrollbar{width:0;height:0;}
+
+  /* ---- Kun Troll motion ---- */
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  .tfloat{animation:floaty 4s ease-in-out infinite;}
+  @keyframes pulsey{0%{transform:scale(1);}40%{transform:scale(1.15);}100%{transform:scale(1);}}
+  .tpulse{animation:floaty 4s ease-in-out infinite, pulsey .9s ease-out;}
+  .eyes{transform-box:fill-box;transform-origin:center;transition:transform .12s ease;}
+  .eyes.tblink{transform:scaleY(0.08);}
+  .troll-body{transition:transform .3s cubic-bezier(.34,1.56,.64,1);transform-box:fill-box;transform-origin:center;}
+
+  /* ---- app motion ---- */
+  @keyframes ktFade{from{opacity:0;}to{opacity:1;}}
+  @keyframes ktSlideUp{from{transform:translateY(40px);}to{transform:translateY(0);}}
+  @keyframes ktPop{0%{transform:scale(0.5);}60%{transform:scale(1.15);}100%{transform:scale(1);}}
+  @keyframes ktTab{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes ktSlideFwd{from{opacity:0;transform:translateX(26px);}to{opacity:1;transform:translateX(0);}}
+  @keyframes ktSlideBack{from{opacity:0;transform:translateX(-26px);}to{opacity:1;transform:translateX(0);}}
+  @keyframes ktspin{to{transform:rotate(360deg);}}
+  .ktspin{animation:ktspin .7s linear infinite;}
+  @keyframes ktring{0%{transform:scale(0.5);opacity:0.7;}100%{transform:scale(2.2);opacity:0;}}
+  .ktring{animation:ktring 2.4s ease-out infinite;}
+  @keyframes ktActIn{from{opacity:0;transform:translateY(-10px) scale(0.85);}to{opacity:1;transform:translateY(0) scale(1);}}
+  @keyframes ktTrollPeek{0%{opacity:0;transform:translateY(34px) scale(0.6);}60%{opacity:1;}100%{opacity:1;transform:translateY(0) scale(1);}}
+  @keyframes ktToastRise{0%{opacity:0;transform:translateY(16px) scale(0.92);}100%{opacity:1;transform:translateY(0) scale(1);}}
+  @keyframes ktPulseOnce{0%{box-shadow:0 0 0 0 rgba(200,255,0,0.5);}70%{box-shadow:0 0 0 10px rgba(200,255,0,0);}100%{box-shadow:0 0 0 0 rgba(200,255,0,0);}}
+  .ktPulse{animation:ktPulseOnce .7s ease-out;}
+  input::placeholder{color:rgba(155,139,196,0.5);}
+</style>
+</head>
+<body>
+  <template id="__bundler_thumbnail" data-bg-color="#1A1A2E">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" fill="#1A1A2E"/>
+      <ellipse cx="50" cy="54" rx="26" ry="19" fill="#6B28EE" stroke="#11111e" stroke-width="1.2"/>
+      <path d="M40 38 L43 26 L46 38 Z" fill="#6B28EE" stroke="#11111e" stroke-width="1"/>
+      <path d="M50 37 L53 23 L56 37 Z" fill="#6B28EE" stroke="#11111e" stroke-width="1"/>
+      <path d="M60 38 L63 27 L66 38 Z" fill="#6B28EE" stroke="#11111e" stroke-width="1"/>
+      <circle cx="44" cy="52" r="7" fill="#fff"/><circle cx="44" cy="52" r="5" fill="#C8FF00"/><circle cx="44" cy="52" r="2.2" fill="#16161f"/>
+      <circle cx="58" cy="52" r="7" fill="#fff"/><circle cx="58" cy="52" r="5" fill="#C8FF00"/><circle cx="58" cy="52" r="2.2" fill="#16161f"/>
+      <path d="M44 62 Q51 69 58 62" fill="none" stroke="#11111e" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </template>
+
+  <div id="scaler"><div id="root"></div></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="frames/ios-frame.jsx"></script>
+  <script type="text/babel" src="frames/tweaks-panel.jsx"></script>
+  <script type="text/babel" src="app/kuntroll.jsx"></script>
+  <script type="text/babel" src="app/data.jsx"></script>
+  <script type="text/babel" src="app/ui.jsx"></script>
+  <script type="text/babel" src="app/Onboarding.jsx"></script>
+  <script type="text/babel" src="app/Flows.jsx"></script>
+  <script type="text/babel" src="app/Home.jsx"></script>
+  <script type="text/babel" src="app/Remote.jsx"></script>
+  <script type="text/babel" src="app/Scenes.jsx"></script>
+  <script type="text/babel" src="app/Activity.jsx"></script>
+  <script type="text/babel" src="app/TrollScout.jsx"></script>
+  <script type="text/babel" src="app/App.jsx"></script>
+
+  <script type="text/babel" data-presets="react">
+    const W=402, H=874;
+    function Mount(){
+      return <window.IOSDevice dark width={W} height={H}>
+        <window.KT_App/>
+      </window.IOSDevice>;
+    }
+    function fit(){
+      const s=Math.min(1,(window.innerHeight-32)/H,(window.innerWidth-32)/W);
+      document.getElementById('scaler').style.transform='scale('+s+')';
+    }
+    window.addEventListener('resize',fit); fit();
+    // wait for all globals to be defined by deferred babel scripts
+    (function boot(){
+      if(window.IOSDevice && window.KT_App && window.useTweaks){
+        ReactDOM.createRoot(document.getElementById('root')).render(<Mount/>);
+      } else { setTimeout(boot,40); }
+    })();
+  </script>
+</body>
+</html>

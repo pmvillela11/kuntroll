@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kun Troll — Character Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1A2E; --card:#252540; --card2:#1E1E38;
+    --violet:#6B28EE; --violet-deep:#5A20CC;
+    --lime:#C8FF00; --text:#F0F0F0; --muted:#9B8BC4;
+    --border:rgba(180,160,255,0.15);
+    --success:#4ADE80; --warning:#FACC15; --error:#F87171;
+    --mono:'Space Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Nunito',system-ui,sans-serif; font-weight:700;
+    line-height:1.5; padding-bottom:120px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 32px;}
+
+  /* header */
+  header{
+    padding:64px 32px 40px; text-align:left; max-width:1040px; margin:0 auto;
+  }
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--lime);text-transform:uppercase;margin-bottom:18px;font-weight:700;}
+  h1{font-weight:900;font-size:clamp(34px,5vw,52px);letter-spacing:-1px;line-height:1.0;}
+  h1 .dim{color:var(--muted);font-weight:800;}
+  .lede{font-size:17px;color:var(--muted);font-weight:600;margin-top:16px;max-width:620px;line-height:1.6;}
+
+  .note{
+    margin:28px auto 0; max-width:1040px;
+    background:rgba(107,40,238,0.12); border-left:3px solid var(--violet);
+    border-radius:0 14px 14px 0; padding:18px 22px; font-size:15px; font-weight:700;
+    color:#E7DBFF; line-height:1.6;
+  }
+  .note b{color:var(--lime);}
+
+  /* sections */
+  section{padding:56px 0 0;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+  .sec-num{font-family:var(--mono);font-size:11px;color:var(--lime);border:1px solid rgba(200,255,0,0.3);background:rgba(200,255,0,0.06);border-radius:6px;padding:4px 10px;}
+  .sec-title{font-weight:900;font-size:24px;letter-spacing:-0.3px;}
+  .sec-desc{font-size:15px;color:var(--muted);font-weight:600;margin:16px 0 26px;max-width:640px;line-height:1.6;}
+
+  /* variant chooser */
+  .variants{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media(max-width:780px){.variants{grid-template-columns:1fr;}}
+  .vcard{
+    background:var(--card); border:2px solid var(--border); border-radius:20px;
+    padding:24px 20px 20px; cursor:pointer; transition:border-color .2s, transform .2s, box-shadow .2s;
+    position:relative; box-shadow:0 4px 12px rgba(0,0,0,0.4);
+  }
+  .vcard:hover{transform:translateY(-3px);border-color:rgba(180,160,255,0.4);}
+  .vcard.active{border-color:var(--lime);box-shadow:0 0 0 1px var(--lime),0 8px 28px rgba(0,0,0,0.5);}
+  .vcard .stage{display:flex;align-items:center;justify-content:center;height:160px;}
+  .vcard .stage svg{width:150px;height:150px;}
+  .vmeta{display:flex;align-items:center;justify-content:space-between;margin-top:14px;}
+  .vname{font-weight:900;font-size:18px;}
+  .vtag{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .vdesc{font-size:13px;color:var(--muted);font-weight:600;margin-top:8px;line-height:1.5;}
+  .rec-badge{position:absolute;top:-11px;right:18px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1px;background:var(--lime);color:#16161f;padding:4px 10px;border-radius:100px;text-transform:uppercase;}
+  .selected-pill{position:absolute;top:14px;left:14px;font-family:var(--mono);font-size:9px;color:var(--lime);border:1px solid rgba(200,255,0,0.4);border-radius:100px;padding:3px 8px;letter-spacing:1px;opacity:0;transition:opacity .2s;}
+  .vcard.active .selected-pill{opacity:1;}
+
+  /* expressions */
+  .expr-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
+  @media(max-width:880px){.expr-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:520px){.expr-grid{grid-template-columns:1fr;}}
+  .ecard{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px 14px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.35);}
+  .ecard .stage{height:108px;display:flex;align-items:center;justify-content:center;}
+  .ecard .stage svg{width:100px;height:100px;}
+  .ename{font-weight:900;font-size:16px;margin-top:8px;}
+  .etrig{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:6px;line-height:1.45;min-height:60px;}
+  .epill{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 9px;border-radius:100px;margin-top:8px;text-transform:uppercase;}
+
+  /* playground */
+  .pg{display:grid;grid-template-columns:340px 1fr;gap:28px;align-items:start;}
+  @media(max-width:760px){.pg{grid-template-columns:1fr;}}
+  .pg-stage{
+    background:radial-gradient(circle at 50% 42%, rgba(107,40,238,0.28), transparent 62%), var(--card2);
+    border:1px solid var(--border); border-radius:24px; height:360px;
+    display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+  }
+  .pg-stage svg{width:200px;height:200px;}
+  .pg-label{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-family:var(--mono);font-size:12px;color:var(--lime);letter-spacing:1px;}
+  .ctrl-group{margin-bottom:22px;}
+  .ctrl-group h4{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;font-weight:700;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-family:'Nunito';font-weight:800;font-size:13px;color:var(--text);
+    background:var(--card);border:1px solid var(--border);border-radius:100px;
+    padding:9px 16px;cursor:pointer;transition:all .18s;
+  }
+  .chip:hover{border-color:rgba(180,160,255,0.45);}
+  .chip.active{background:var(--violet);border-color:var(--violet);color:#fff;}
+  .toggle{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 14px;margin-bottom:8px;
+    cursor:pointer;font-weight:800;font-size:14px;
+  }
+  .sw{width:42px;height:24px;border-radius:100px;background:#3a3a55;position:relative;transition:background .2s;flex-shrink:0;}
+  .sw::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s;}
+  .toggle.on .sw{background:var(--lime);}
+  .toggle.on .sw::after{transform:translateX(18px);background:#16161f;}
+
+  /* sizes */
+  .sizes{display:flex;align-items:flex-end;gap:40px;flex-wrap:wrap;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:32px;}
+  .size-item{text-align:center;}
+  .size-item .stage{display:flex;align-items:flex-end;justify-content:center;position:relative;}
+  .size-cap{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:14px;letter-spacing:0.5px;}
+  .size-cap b{color:var(--lime);display:block;font-size:13px;margin-bottom:2px;}
+  .hero-glow{background:radial-gradient(circle, rgba(107,40,238,0.4), transparent 68%);border-radius:50%;}
+
+  /* table */
+  .tbl{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:14px;overflow:hidden;font-size:14px;margin-top:8px;}
+  .tbl thead tr{background:rgba(107,40,238,0.15);}
+  .tbl th{padding:12px 16px;text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--lime);text-transform:uppercase;font-weight:700;}
+  .tbl td{padding:12px 16px;border-top:1px solid rgba(180,160,255,0.08);color:rgba(240,240,240,0.85);font-weight:600;vertical-align:top;}
+  .tbl td:first-child{color:var(--text);font-weight:800;white-space:nowrap;}
+  .tbl .m{font-family:var(--mono);font-size:12px;color:var(--lime);}
+
+  .footer{max-width:1040px;margin:80px auto 0;padding:28px 32px 0;border-top:1px solid var(--border);font-size:13px;color:var(--muted);font-weight:600;}
+  .footer b{color:var(--text);}
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Kun Troll · Homeware Hub — Character Spec v1</p>
+  <h1>Meet Kun Troll. <span class="dim">Quietly.</span></h1>
+  <p class="lede">One parametric character, three renderings, five locked expressions. Built once, reused everywhere — so he looks identical on every screen.</p>
+</header>
+
+<div class="note">
+  <b>Direction:</b> Kun Troll stays discreet. Corner-badge by default; the hero treatment is reserved for genuine moments — onboarding, a scene firing, Troll Scout finding something. Presence, not decoration. Pick a rendering below and the whole sheet updates.
+</div>
+
+<div class="wrap">
+
+  <!-- 1. RENDERINGS -->
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><span class="sec-title">Pick a rendering</span></div>
+    <p class="sec-desc">Same locked anatomy — wide oval head, exactly 3 spikes, troll ears, close-set lime eyes, no nose, no eyebrows, no body. The three differ only in weight and proportion. Click to choose.</p>
+    <div class="variants" id="variants"></div>
+  </section>
+
+  <!-- 2. EXPRESSIONS -->
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><span class="sec-title">The five expressions</span></div>
+    <p class="sec-desc">Each maps to one product state. No sixth expression exists without a new product state being defined first.</p>
+    <div class="expr-grid" id="exprGrid"></div>
+  </section>
+
+  <!-- 3. PLAYGROUND -->
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><span class="sec-title">Live playground</span></div>
+    <p class="sec-desc">Switch expressions to feel the spring transition. Float and blink run continuously where the spec allows. Wow and Love fire a one-time reaction pulse.</p>
+    <div class="pg">
+      <div class="pg-stage">
+        <div id="pgTroll"></div>
+        <div class="pg-label" id="pgLabel">HAPPY</div>
+      </div>
+      <div>
+        <div class="ctrl-group">
+          <h4>Expression</h4>
+          <div class="chips" id="exprChips"></div>
+        </div>
+        <div class="ctrl-group">
+          <h4>Motion</h4>
+          <div class="toggle on" id="tFloat"><span>Float — translateY 4s loop</span><span class="sw"></span></div>
+          <div class="toggle on" id="tBlink"><span>Blink — every 5–7s</span><span class="sw"></span></div>
+          <div class="toggle on" id="tGlow"><span>Hero glow</span><span class="sw"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. SIZES -->
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><span class="sec-title">Sizes &amp; placement</span></div>
+    <p class="sec-desc">Glow appears in the hero zone only — never on the corner badge or empty states.</p>
+    <div class="sizes" id="sizes"></div>
+  </section>
+
+  <!-- 5. ANIMATION REF -->
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><span class="sec-title">Animation reference</span></div>
+    <table class="tbl">
+      <thead><tr><th>Animation</th><th>Parameters</th><th>Applies to</th></tr></thead>
+      <tbody>
+        <tr><td>Float</td><td><span class="m">translateY 0 → −8px</span>, 4s ease-in-out, infinite</td><td>Always, whenever visible</td></tr>
+        <tr><td>Blink</td><td>close 80ms / open 120ms, random every 5–7s</td><td>Happy &amp; Wink only</td></tr>
+        <tr><td>Expression</td><td>spring — stiffness 200, damping 20, ~300ms</td><td>Any change. Never cut.</td></tr>
+        <tr><td>Entrance</td><td>scale <span class="m">0.6 → 1.0</span> spring + fade</td><td>First appearance</td></tr>
+        <tr><td>Reaction pulse</td><td>scale <span class="m">1.0 → 1.15 → 1.0</span>, 200ms</td><td>Wow &amp; Love triggers</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="footer">
+    <b>Next:</b> approve a rendering and I'll wire it into the iPhone prototype — corner-badge by default, hero at key moments. Then Home Dashboard, a Remote, Scene fire, and Troll Scout. · <b>Kun Troll — Homeware Hub</b>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   KUN TROLL — single parametric SVG builder (source of truth)
+   ============================================================ */
+const OUT='#1A1A2E', VIOLET='#6B28EE', LIME='#C8FF00';
+let UID=0;
+
+const VARIANTS={
+  C:{name:'Quiet',  tag:'Minimal · premium', rec:true,
+     desc:'Thin 1.6px outline, wider low head, smaller eyes. The most restrained — recommended for a discreet presence.',
+     headRx:74, headRy:50, outline:1.6, eyeR:16, irisR:12, pupilR:5.2, spikeW:18, spikeH:32, mouthW:50},
+  A:{name:'Pebble', tag:'Balanced', rec:false,
+     desc:'2.4px outline, classic friendly-pebble proportions. The middle ground if Quiet feels too subtle.',
+     headRx:72, headRy:52, outline:2.4, eyeR:18, irisR:14, pupilR:6.2, spikeW:22, spikeH:38, mouthW:55},
+  B:{name:'Sticker',tag:'Bold · playful', rec:false,
+     desc:'3.6px outline, rounder head, bigger eyes & spikes. Reads at tiny sizes; more mascot, less discreet.',
+     headRx:69, headRy:54, outline:3.6, eyeR:20, irisR:16, pupilR:7.2, spikeW:26, spikeH:42, mouthW:60},
+};
+
+function starPath(cx,cy,r){
+  // 4-point sparkle
+  const ir=r*0.34;
+  let p=[];
+  for(let i=0;i<8;i++){
+    const ang=-Math.PI/2 + i*Math.PI/4;
+    const rad=(i%2===0)?r:ir;
+    p.push((cx+Math.cos(ang)*rad).toFixed(1)+','+(cy+Math.sin(ang)*rad).toFixed(1));
+  }
+  return 'M'+p.join(' L')+' Z';
+}
+function heartPath(cx,cy,s){
+  return `M ${cx} ${cy+s*0.9} C ${cx-s*1.4} ${cy-s*0.4}, ${cx-s*0.6} ${cy-s*1.3}, ${cx} ${cy-s*0.45} C ${cx+s*0.6} ${cy-s*1.3}, ${cx+s*1.4} ${cy-s*0.4}, ${cx} ${cy+s*0.9} Z`;
+}
+
+function buildEye(ex,ey,v,exp,closed){
+  if(exp==='love'){
+    return `<path d="${starPath(ex,ey,v.eyeR*0.95)}" fill="${LIME}" stroke="${OUT}" stroke-width="${v.outline}" stroke-linejoin="round"/>`;
+  }
+  if(closed){
+    const w=v.eyeR*0.85;
+    return `<path d="M ${ex-w} ${ey-2} Q ${ex} ${ey+v.eyeR*0.6} ${ex+w} ${ey-2}" fill="none" stroke="${OUT}" stroke-width="${(v.outline+0.6).toFixed(1)}" stroke-linecap="round"/>`;
+  }
+  const sc=(exp==='wow')?1.26:1;
+  const R=v.eyeR*sc, IR=v.irisR*sc, PR=v.pupilR*sc;
+  let s=`<circle cx="${ex}" cy="${ey}" r="${R.toFixed(1)}" fill="#fff" stroke="${OUT}" stroke-width="${v.outline}"/>`+
+        `<circle cx="${ex}" cy="${ey}" r="${IR.toFixed(1)}" fill="${LIME}"/>`+
+        `<circle cx="${ex}" cy="${ey}" r="${PR.toFixed(1)}" fill="#16161f"/>`+
+        `<circle cx="${(ex+PR*0.42).toFixed(1)}" cy="${(ey-PR*0.5).toFixed(1)}" r="${(PR*0.34).toFixed(1)}" fill="#fff"/>`;
+  if(exp==='sleepy'){
+    const id='lid'+(UID++);
+    s+=`<clipPath id="${id}"><circle cx="${ex}" cy="${ey}" r="${R.toFixed(1)}"/></clipPath>`+
+       `<g clip-path="url(#${id})">`+
+         `<rect x="${ex-R-2}" y="${ey-R-2}" width="${2*R+4}" height="${R*1.55}" fill="${VIOLET}"/>`+
+         `<line x1="${ex-R}" y1="${(ey-R*0.45).toFixed(1)}" x2="${ex+R}" y2="${(ey-R*0.45).toFixed(1)}" stroke="${OUT}" stroke-width="${v.outline}"/>`+
+       `</g>`+
+       `<circle cx="${ex}" cy="${ey}" r="${R.toFixed(1)}" fill="none" stroke="${OUT}" stroke-width="${v.outline}"/>`;
+  }
+  return s;
+}
+
+function buildMouth(v,exp,my){
+  const cx=100, w=v.mouthW;
+  if(exp==='wow'){
+    return `<ellipse cx="${cx}" cy="${my+2}" rx="${(w*0.17).toFixed(1)}" ry="${(w*0.22).toFixed(1)}" fill="#2A1052" stroke="${OUT}" stroke-width="${v.outline}"/>`;
+  }
+  if(exp==='sleepy'){
+    return `<path d="M ${cx-w*0.28} ${my} Q ${cx} ${my-4} ${cx+w*0.28} ${my}" fill="none" stroke="${OUT}" stroke-width="${(v.outline+0.4).toFixed(1)}" stroke-linecap="round"/>`;
+  }
+  if(exp==='love'){
+    return `<path d="M ${cx-w*0.55} ${my-2} Q ${cx} ${my+w*0.5} ${cx+w*0.55} ${my-2}" fill="none" stroke="${OUT}" stroke-width="${(v.outline+0.4).toFixed(1)}" stroke-linecap="round"/>`;
+  }
+  // happy / wink
+  return `<path d="M ${cx-w*0.5} ${my} Q ${cx} ${my+w*0.32} ${cx+w*0.5} ${my}" fill="none" stroke="${OUT}" stroke-width="${(v.outline+0.4).toFixed(1)}" stroke-linecap="round"/>`;
+}
+
+function buildTroll(exp, vkey){
+  const v=VARIANTS[vkey];
+  const cx=100, cy=110;
+  const headTop=cy-v.headRy;
+  const baseY=headTop+10;
+
+  // spikes (3, slight forward lean)
+  const sp=[{bx:cx-28,hf:0.86},{bx:cx+1,hf:1.0},{bx:cx+27,hf:0.9}];
+  const spikes=sp.map(s=>{
+    const w=v.spikeW, h=v.spikeH*s.hf, ax=s.bx+5, ay=baseY-h;
+    return `<path d="M ${s.bx-w/2} ${baseY} L ${ax} ${ay.toFixed(1)} L ${s.bx+w/2} ${baseY} Z" fill="${VIOLET}" stroke="${OUT}" stroke-width="${v.outline}" stroke-linejoin="round"/>`;
+  }).join('');
+
+  // ears
+  const ex=v.headRx;
+  const ears=
+    `<path d="M ${cx-ex+6} ${cy-12} L ${cx-ex-12} ${cy} L ${cx-ex+6} ${cy+12} Z" fill="${VIOLET}" stroke="${OUT}" stroke-width="${v.outline}" stroke-linejoin="round"/>`+
+    `<path d="M ${cx+ex-6} ${cy-12} L ${cx+ex+12} ${cy} L ${cx+ex-6} ${cy+12} Z" fill="${VIOLET}" stroke="${OUT}" stroke-width="${v.outline}" stroke-linejoin="round"/>`;
+
+  // head
+  const head=`<ellipse cx="${cx}" cy="${cy}" rx="${v.headRx}" ry="${v.headRy}" fill="${VIOLET}" stroke="${OUT}" stroke-width="${v.outline}"/>`;
+
+  // eyes
+  const gap=v.eyeR*1.08, eyeY=cy-6;
+  const eyeL=buildEye(cx-gap,eyeY,v,exp,false);
+  const eyeR=buildEye(cx+gap,eyeY,v,exp,exp==='wink');
+  const eyes=`<g class="eyes">${eyeL}${eyeR}</g>`;
+
+  // mouth
+  const my=cy+v.headRy*0.52;
+  const mouth=buildMouth(v,exp,my);
+
+  // hearts (love)
+  let hearts='';
+  if(exp==='love'){
+    hearts=`<g class="hearts">`+
+      `<path d="${heartPath(cx-30,headTop-14,5)}" fill="${LIME}" stroke="${OUT}" stroke-width="1.2"/>`+
+      `<path d="${heartPath(cx+6,headTop-30,7)}" fill="${LIME}" stroke="${OUT}" stroke-width="1.2"/>`+
+      `<path d="${heartPath(cx+34,headTop-16,4)}" fill="${LIME}" stroke="${OUT}" stroke-width="1.2"/>`+
+    `</g>`;
+  }
+
+  const tilt=(exp==='wink')?` transform="rotate(5 100 110)"`:(exp==='wow')?` transform="rotate(-3 100 110)"`:'';
+  return `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">`+
+    `<g class="troll-body"${tilt}>${spikes}${ears}${head}${eyes}${mouth}</g>${hearts}`+
+  `</svg>`;
+}
+
+/* ============================================================
+   PAGE WIRING
+   ============================================================ */
+const EXPRS=[
+  {key:'happy', name:'Happy',  trig:'Default — app open, device online, command sent.', pill:'pill-g'},
+  {key:'wow',   name:'Wow',    trig:'Device discovered, Troll Scout finds commands, scene fires.', pill:'pill-l'},
+  {key:'wink',  name:'Wink',   trig:'Searching, scene saved, onboarding milestone.', pill:'pill-v'},
+  {key:'sleepy',name:'Sleepy', trig:'Device offline, command failed, idle 5min+.', pill:'pill-a'},
+  {key:'love',  name:'Love',   trig:'Onboarding done, first scene fired, returning user.', pill:'pill-r'},
+];
+const PILL={'pill-g':['rgba(74,222,128,0.12)','#4ADE80'],'pill-l':['rgba(200,255,0,0.12)','#C8FF00'],'pill-v':['rgba(167,139,250,0.15)','#A78BFA'],'pill-a':['rgba(250,204,21,0.12)','#FACC15'],'pill-r':['rgba(248,113,113,0.12)','#F87171']};
+
+let CURRENT='C';
+
+function renderVariants(){
+  const order=['C','A','B'];
+  document.getElementById('variants').innerHTML=order.map(k=>{
+    const v=VARIANTS[k];
+    return `<div class="vcard ${k===CURRENT?'active':''}" data-v="${k}">
+      ${v.rec?'<span class="rec-badge">Recommended</span>':''}
+      <span class="selected-pill">● Selected</span>
+      <div class="stage float">${buildTroll('happy',k)}</div>
+      <div class="vmeta"><span class="vname">${v.name}</span><span class="vtag">${v.tag}</span></div>
+      <div class="vdesc">${v.desc}</div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.vcard').forEach(c=>c.addEventListener('click',()=>{CURRENT=c.dataset.v;renderAll();}));
+}
+
+function renderExprGrid(){
+  document.getElementById('exprGrid').innerHTML=EXPRS.map(e=>{
+    const[bg,fg]=PILL[e.pill];
+    return `<div class="ecard">
+      <div class="stage float">${buildTroll(e.key,CURRENT)}</div>
+      <div class="ename">${e.name}</div>
+      <div class="etrig">${e.trig}</div>
+      <span class="epill" style="background:${bg};color:${fg}">${e.key}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderSizes(){
+  document.getElementById('sizes').innerHTML=`
+    <div class="size-item">
+      <div class="stage" style="height:150px;">
+        <div class="hero-glow" style="position:absolute;width:160px;height:160px;left:50%;bottom:-6px;transform:translateX(-50%);"></div>
+        <div class="float" style="width:140px;height:140px;position:relative;">${buildTroll('happy',CURRENT)}</div>
+      </div>
+      <div class="size-cap"><b>Hero · 140pt</b>with glow · onboarding, dashboard</div>
+    </div>
+    <div class="size-item">
+      <div class="stage" style="height:150px;"><div class="float" style="width:40px;height:40px;">${buildTroll('wink',CURRENT)}</div></div>
+      <div class="size-cap"><b>Corner · 40pt</b>remote screens · default</div>
+    </div>
+    <div class="size-item">
+      <div class="stage" style="height:150px;"><div class="float" style="width:48px;height:48px;">${buildTroll('sleepy',CURRENT)}</div></div>
+      <div class="size-cap"><b>Min · 48pt</b>eyes + smile legible</div>
+    </div>`;
+}
+
+/* playground */
+let pgExpr='happy', blinkTimer=null;
+function renderChips(){
+  document.getElementById('exprChips').innerHTML=EXPRS.map(e=>
+    `<button class="chip ${e.key===pgExpr?'active':''}" data-e="${e.key}">${e.name}</button>`).join('');
+  document.querySelectorAll('#exprChips .chip').forEach(c=>c.addEventListener('click',()=>{pgExpr=c.dataset.e;renderPlayground();}));
+}
+function renderPlayground(){
+  const stage=document.getElementById('pgTroll');
+  const floatOn=document.getElementById('tFloat').classList.contains('on');
+  const pulse=(pgExpr==='wow'||pgExpr==='love')?'pulse':'';
+  stage.className=(floatOn?'float ':'')+pulse;
+  stage.style.width='200px';stage.style.height='200px';
+  stage.innerHTML=buildTroll(pgExpr,CURRENT);
+  document.getElementById('pgLabel').textContent=pgExpr.toUpperCase();
+  // glow toggle
+  document.querySelector('.pg-stage').style.background=
+    document.getElementById('tGlow').classList.contains('on')
+    ? 'radial-gradient(circle at 50% 42%, rgba(107,40,238,0.28), transparent 62%), #1E1E38'
+    : '#1E1E38';
+  // restart pulse
+  if(pulse){stage.style.animation='none';void stage.offsetWidth;stage.style.animation='';}
+  renderChips();
+  setupBlink();
+}
+function setupBlink(){
+  if(blinkTimer){clearTimeout(blinkTimer);blinkTimer=null;}
+  const on=document.getElementById('tBlink').classList.contains('on');
+  if(!on)return;
+  if(!(pgExpr==='happy'||pgExpr==='wink'))return;
+  const loop=()=>{
+    const eyes=document.querySelector('#pgTroll .eyes');
+    if(eyes){eyes.classList.add('blinking');setTimeout(()=>eyes.classList.remove('blinking'),200);}
+    blinkTimer=setTimeout(loop, 5000+Math.random()*2000);
+  };
+  blinkTimer=setTimeout(loop, 4000+Math.random()*2000);
+}
+
+document.querySelectorAll('.toggle').forEach(t=>t.addEventListener('click',()=>{
+  t.classList.toggle('on');renderPlayground();
+}));
+
+function renderAll(){renderVariants();renderExprGrid();renderSizes();renderPlayground();}
+renderAll();
+</script>
+
+<style>
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  .float{animation:floaty 4s ease-in-out infinite;}
+  @keyframes pulsey{0%{transform:scale(1);}40%{transform:scale(1.15);}100%{transform:scale(1);}}
+  .pulse{animation:floaty 4s ease-in-out infinite, pulsey .9s ease-out;}
+  .eyes{transform-box:fill-box;transform-origin:center;transition:transform .12s ease;}
+  .eyes.blinking{transform:scaleY(0.08);}
+  .troll-body{transition:transform .3s cubic-bezier(.34,1.56,.64,1);transform-box:fill-box;transform-origin:center;}
+</style>
+
+</body>
+</html>
