@@ -1,0 +1,20 @@
+// Design tokens — exact values from the handoff (§6). Do not tweak.
+export const T = {
+  bg: '#1A1A2E',
+  card: '#252540',
+  card2: '#1E1E38',
+  violet: '#6B28EE',
+  violetDeep: '#5A20CC',
+  violetSoft: 'rgba(107,40,238,0.16)',
+  lime: '#C8FF00',
+  text: '#F0F0F0',
+  muted: '#9B8BC4',
+  border: 'rgba(180,160,255,0.15)',
+  borderStrong: 'rgba(180,160,255,0.28)',
+  success: '#4ADE80',
+  warning: '#FACC15',
+  error: '#F87171',
+  aiViolet: '#A78BFA',
+  mono: "'Space Mono', monospace",
+  sans: "'Nunito', system-ui, sans-serif",
+} as const;
