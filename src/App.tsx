@@ -1,5 +1,5 @@
 // Shell: tab nav + back, screen transitions, on-action Kun Troll + toast, overlays & sheets.
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { T } from './design/tokens';
 import { Icon, type IconName } from './components/Icon';
 import { Troll } from './components/Troll';
@@ -17,7 +17,8 @@ import { AddDevice, SceneBuilder } from './screens/Flows';
 import { DeviceSettings } from './sheets/DeviceSettings';
 import { RoomEditor } from './sheets/RoomEditor';
 import { BridgeConfig } from './sheets/BridgeConfig';
-import { clone } from './data/seed';
+import { clone } from './data/constants';
+import { isNative } from './lib/native';
 import type { Bridge, Device, Room, Scene } from './types';
 
 const TABS: [Tab, string, IconName][] = [
@@ -75,7 +76,7 @@ export default function App() {
   const act = useStore((s) => s.act);
   const toast = useStore((s) => s.toast);
   const seenOnboarding = useStore((s) => s.seenOnboarding);
-  const { go, setMainId, setSeenOnboarding, saveScoutCmds, saveScene } = useStore();
+  const { go, setMainId, setSeenOnboarding, saveScoutCmds, saveScene, refreshHealth } = useStore();
   const trollVariant = VARKEY[useTweaks((s) => s.trollRendering)];
 
   const [editHome, setEditHome] = useState(false);
@@ -87,7 +88,18 @@ export default function App() {
   const [bridgeCfg, setBridgeCfg] = useState<Bridge | null>(null);
   const [recovery, setRecovery] = useState<Device | null>(null);
   const [diagOpen, setDiagOpen] = useState(false);
-  const [onboarding, setOnboarding] = useState(!seenOnboarding);
+  const [replayIntro, setReplayIntro] = useState(false);
+  const onboarding = !seenOnboarding || replayIntro;
+
+  // Real-device health poll (native only — the web build is fully simulated).
+  useEffect(() => {
+    if (!isNative()) return;
+    const iv = setInterval(() => {
+      if (document.visibilityState === 'visible') refreshHealth();
+    }, 30000);
+    return () => clearInterval(iv);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const openScout = (prefill: { brand: string; model: string } | null) => setScout({ open: true, prefill });
   const openDevice = (d: Device) => {
@@ -104,7 +116,7 @@ export default function App() {
   let screen;
   if (tab === 'home') screen = <Home editHome={editHome} setEditHome={setEditHome} openDevice={openDevice} openAddDevice={() => setAddDevice(true)} />;
   else if (tab === 'rooms') screen = <Rooms openDevice={openDevice} onAddRoom={() => setRoomEd({ open: true, room: null })} onEditRoom={(r) => setRoomEd({ open: true, room: r })} />;
-  else if (tab === 'controller') screen = <Controller />;
+  else if (tab === 'controller') screen = <Controller openAddDevice={() => setAddDevice(true)} />;
   else if (tab === 'scenes')
     screen = <Scenes onNewScene={() => setSceneEd({ open: true, scene: null })} onEditScene={(s) => setSceneEd({ open: true, scene: s })} onDuplicate={duplicateScene} />;
   else if (tab === 'activity') screen = <Activity onDiagnostics={() => setDiagOpen(true)} onRecover={(d) => setRecovery(d)} />;
@@ -117,7 +129,7 @@ export default function App() {
         onAddRoom={() => setRoomEd({ open: true, room: null })}
         onAddScene={() => setSceneEd({ open: true, scene: null })}
         onAddDevice={() => setAddDevice(true)}
-        onReplay={() => setOnboarding(true)}
+        onReplay={() => setReplayIntro(true)}
         onDiagnostics={() => setDiagOpen(true)}
       />
     );
@@ -198,9 +210,10 @@ export default function App() {
       {addDevice && <AddDevice onClose={() => setAddDevice(false)} openScout={openScout} />}
       {onboarding && (
         <Onboarding
-          onDone={() => {
-            setOnboarding(false);
+          onDone={(addFirstDevice) => {
+            setReplayIntro(false);
             setSeenOnboarding(true);
+            if (addFirstDevice) setAddDevice(true);
           }}
         />
       )}

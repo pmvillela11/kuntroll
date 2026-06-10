@@ -247,6 +247,7 @@ export function Home({
   const homeOrder = useStore((s) => s.homeOrder);
   const sizes = useStore((s) => s.sizes);
   const lightScenes = useStore((s) => s.lightScenes);
+  const homeName = useStore((s) => s.homeName);
   const {
     runScene,
     updateDevice,
@@ -265,7 +266,7 @@ export function Home({
   const trollVariant = VARKEY[useTweaks((s) => s.trollRendering)];
 
   const online = devices.filter((d) => d.status === 'online').length;
-  const greeting = greetingNow(online, devices.length);
+  const greeting = greetingNow(online, devices.length, homeName);
   const favs = scenes.filter((s) => s.favourite);
   const lamps = devices.filter((d) => d.type === 'light');
   const coreDevices = devices.filter((d) => d.type !== 'light' && d.type !== 'ir');
@@ -364,6 +365,7 @@ export function Home({
         idx={idx}
         title="Lights"
         right={
+          lamps.length === 0 ? undefined : (
           <button
             onClick={allLightsOff}
             style={{
@@ -382,8 +384,23 @@ export function Home({
           >
             <Icon name="lightoff" size={15} /> All off
           </button>
+          )
         }
       >
+        {lamps.length === 0 ? (
+          <div style={{ border: `1px dashed ${T.border}`, borderRadius: 18 }}>
+            <EmptyState
+              exp="sleepy"
+              variant={trollVariant}
+              compact
+              title="No lights yet"
+              sub="Pair a Hue Bridge or add a lamp to control your lights from here."
+              action="Add lights"
+              onAction={openAddDevice}
+            />
+          </div>
+        ) : (
+          <>
         {/* light scenes — same card size as favorites */}
         <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols(sizes.lights, 2)},1fr)`, gap: 12, marginBottom: 14 }}>
           {lightScenes.map((sc: LightScene, i: number) => (
@@ -455,6 +472,8 @@ export function Home({
             );
           })}
         </div>
+          </>
+        )}
       </Shell>
     ),
     rooms: (idx) => (

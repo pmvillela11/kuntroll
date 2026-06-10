@@ -1,18 +1,12 @@
-// Onboarding — 7-step first-run flow, hero Kun Troll. Ends by setting `seenOnboarding`.
-import { useEffect, useState, type ReactNode } from 'react';
+// Onboarding — intro-only first-run flow (5 steps). Adds nothing to the home;
+// it ends on the empty dashboard, optionally jumping straight into Add Device.
+import { useState, type ReactNode } from 'react';
 import { T } from '../design/tokens';
-import { DEVICE_ICON, Icon, type IconName } from '../components/Icon';
+import { Icon, type IconName } from '../components/Icon';
 import { Btn, Mono, haptic } from '../components/ui';
 import { Troll } from '../components/Troll';
-import { useTweaks, VARKEY } from '../store/store';
+import { useStore, useTweaks, VARKEY } from '../store/store';
 import type { TrollExpression } from '../types';
-
-const FOUND = [
-  { id: 'tv', type: 'tv', name: 'Samsung TV', model: 'QE75QN800BT', via: 'WebSocket LAN' },
-  { id: 'rec', type: 'receiver', name: 'Yamaha Receiver', model: 'RX-A870', via: 'MusicCast' },
-  { id: 'atv', type: 'appletv', name: 'Apple TV', model: 'Apple TV 4K', via: 'mDNS' },
-  { id: 'hue', type: 'light', name: 'Hue Bridge', model: '2 bridges · 6 lights', via: 'Hue API' },
-];
 
 function Dots({ n, i }: { n: number; i: number }) {
   return (
@@ -27,39 +21,21 @@ function Dots({ n, i }: { n: number; i: number }) {
   );
 }
 
-export function Onboarding({ onDone }: { onDone: () => void }) {
+export function Onboarding({ onDone }: { onDone: (addFirstDevice: boolean) => void }) {
   const tv = VARKEY[useTweaks((s) => s.trollRendering)];
+  const { setHomeName } = useStore();
   const [step, setStep] = useState(0);
-  const [scanning, setScanning] = useState(false);
-  const [foundN, setFoundN] = useState(0);
-  const [picked, setPicked] = useState(FOUND.map((f) => f.id));
-  const [name, setName] = useState('');
-  const [firing, setFiring] = useState(false);
-  const N = 7;
+  const [name, setName] = useState(useStore.getState().homeName);
+  const N = 5;
   const go = (d: number) => {
     haptic();
     setStep((s) => Math.max(0, Math.min(N - 1, s + d)));
   };
+  const finish = (addFirstDevice: boolean) => {
+    setHomeName(name.trim());
+    onDone(addFirstDevice);
+  };
 
-  // step 3: run discovery animation
-  useEffect(() => {
-    if (step !== 3) return;
-    setScanning(true);
-    setFoundN(0);
-    let k = 0;
-    const iv = setInterval(() => {
-      k++;
-      setFoundN(k);
-      haptic(8);
-      if (k >= FOUND.length) {
-        clearInterval(iv);
-        setScanning(false);
-      }
-    }, 650);
-    return () => clearInterval(iv);
-  }, [step]);
-
-  const toggle = (id: string) => setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
   const Hero = ({ exp = 'happy', size = 150, glow = true }: { exp?: TrollExpression; size?: number; glow?: boolean }) => (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <Troll exp={exp} variant={tv} presence="subtle" size={size} glow={glow} />
@@ -81,7 +57,7 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
         <Sub>Your whole living room — every remote, every light, every scene — in one app. Hi. I'll get you set up in under three minutes.</Sub>
       </div>
     ),
-    // 1 — the problem / promise
+    // 1 — the promise
     () => (
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 8px' }}>
         <Hero exp="wink" size={140} />
@@ -109,7 +85,7 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 8px' }}>
         <Hero exp="happy" size={130} />
         <Title>Let me see your network</Title>
-        <Sub>I scan your local Wi-Fi to discover devices. Everything stays on your network — nothing leaves the house.</Sub>
+        <Sub>When you add a device I scan your local Wi-Fi to find it. Everything stays on your network — nothing leaves the house.</Sub>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, margin: '24px auto 0', maxWidth: 300, width: '100%' }}>
           {(
             [
@@ -129,84 +105,7 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
         </div>
       </div>
     ),
-    // 3 — discovery (animated)
-    () => (
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 8px' }}>
-        <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', marginBottom: 6 }}>
-          {scanning &&
-            [0, 1, 2].map((i) => (
-              <div
-                key={i}
-                className="ktring"
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  width: 130,
-                  height: 130,
-                  marginLeft: -65,
-                  marginTop: -65,
-                  border: `1.5px solid rgba(200,255,0,0.4)`,
-                  borderRadius: '50%',
-                  animationDelay: `${i * 0.8}s`,
-                }}
-              />
-            ))}
-          <Troll exp={scanning ? 'wink' : 'wow'} variant={tv} presence="subtle" size={130} glow />
-        </div>
-        <Title>{scanning ? 'Scanning your home…' : `Found ${FOUND.length} devices`}</Title>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, margin: '22px auto 0', maxWidth: 320, width: '100%' }}>
-          {FOUND.map((f, i) => {
-            const shown = i < foundN;
-            const on = picked.includes(f.id);
-            return (
-              <div
-                key={f.id}
-                onClick={() => shown && toggle(f.id)}
-                style={{
-                  display: 'flex',
-                  gap: 14,
-                  alignItems: 'center',
-                  background: T.card,
-                  border: `1px solid ${on && shown ? T.borderStrong : T.border}`,
-                  borderRadius: 14,
-                  padding: '13px 15px',
-                  cursor: shown ? 'pointer' : 'default',
-                  opacity: shown ? 1 : 0.25,
-                  transform: shown ? 'translateY(0)' : 'translateY(8px)',
-                  transition: 'all .35s',
-                }}
-              >
-                <Icon name={DEVICE_ICON[f.type]} size={22} color={T.lime} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 800, fontSize: 14 }}>{f.name}</div>
-                  <Mono style={{ fontSize: 11, color: T.muted }}>
-                    {f.model} · {f.via}
-                  </Mono>
-                </div>
-                {shown && (
-                  <div
-                    style={{
-                      width: 24,
-                      height: 24,
-                      borderRadius: 7,
-                      border: `1.5px solid ${on ? T.lime : T.border}`,
-                      background: on ? T.lime : 'transparent',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {on && <Icon name="check" size={15} color="#16161f" />}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    ),
-    // 4 — name your home
+    // 3 — name your home
     () => (
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 8px' }}>
         <Hero exp="happy" size={130} />
@@ -246,68 +145,17 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
         </div>
       </div>
     ),
-    // 5 — first scene (fire it)
-    () => (
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 8px' }}>
-        <Hero exp={firing ? 'love' : 'wow'} size={140} />
-        <Title>{firing ? 'Look at that.' : 'Try your first scene'}</Title>
-        <Sub>{firing ? 'That just controlled four devices at once. This is what every tap can do.' : 'I built a few scenes from what I found. Tap one to fire it now.'}</Sub>
-        {!firing && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, margin: '24px auto 0', maxWidth: 320, width: '100%' }}>
-            {(
-              [
-                ['Cinema', 'film'],
-                ['Good Night', 'moon'],
-              ] as [string, IconName][]
-            ).map(([nm, ic]) => (
-              <div
-                key={nm}
-                onClick={() => {
-                  haptic(15);
-                  setFiring(true);
-                }}
-                style={{
-                  background: 'linear-gradient(155deg,#2c2150,#211b3c)',
-                  border: `1px solid ${T.border}`,
-                  borderRadius: 18,
-                  padding: 18,
-                  cursor: 'pointer',
-                  minHeight: 104,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(200,255,0,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Icon name={ic} size={22} color={T.lime} />
-                </div>
-                <div style={{ fontWeight: 900, fontSize: 18 }}>{nm}</div>
-              </div>
-            ))}
-          </div>
-        )}
-        {firing && (
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center', background: 'rgba(74,222,128,0.12)', border: `1px solid rgba(74,222,128,0.3)`, borderRadius: 100, padding: '10px 18px' }}>
-              <Icon name="check" size={16} color={T.success} />
-              <span style={{ fontWeight: 800, fontSize: 14, color: T.success }}>Cinema fired · 4 devices</span>
-            </div>
-          </div>
-        )}
-      </div>
-    ),
-    // 6 — done
+    // 4 — done → add first device
     () => (
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 8px' }}>
         <Hero exp="love" size={168} />
-        <Title>You're all set{name ? `, ${name}` : ''}</Title>
-        <Sub>Everything's on your home screen. Miss a device or a command? Troll Scout's got you — just ask me to find it.</Sub>
+        <Title>You're in{name.trim() ? `, welcome to ${name.trim()}` : ''}</Title>
+        <Sub>Your home is a blank canvas. Let's find your first device — your TV, receiver or a Hue Bridge — and build from there.</Sub>
       </div>
     ),
   ];
 
   const last = step === N - 1;
-  const canNext = step !== 3 || foundN >= FOUND.length;
   return (
     <div
       style={{
@@ -323,7 +171,7 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
       {/* skip */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '56px 20px 0' }}>
         {!last && (
-          <button onClick={onDone} style={{ background: 'none', border: 'none', color: T.muted, fontWeight: 800, fontSize: 14, cursor: 'pointer', padding: 6 }}>
+          <button onClick={() => finish(false)} style={{ background: 'none', border: 'none', color: T.muted, fontWeight: 800, fontSize: 14, cursor: 'pointer', padding: 6 }}>
             Skip
           </button>
         )}
@@ -340,10 +188,18 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
               <Icon name="back" size={20} />
             </Btn>
           )}
-          <Btn kind={last ? 'lime' : 'primary'} full onClick={() => (last ? onDone() : canNext && go(1))} style={{ opacity: canNext ? 1 : 0.5 }}>
-            {last ? 'Enter my home' : step === 0 ? 'Get started' : step === 3 ? `Add ${picked.length} devices` : 'Continue'}
+          <Btn kind={last ? 'lime' : 'primary'} full onClick={() => (last ? finish(true) : go(1))}>
+            {last ? 'Add my first device' : step === 0 ? 'Get started' : 'Continue'}
           </Btn>
         </div>
+        {last && (
+          <button
+            onClick={() => finish(false)}
+            style={{ display: 'block', margin: '14px auto 0', background: 'none', border: 'none', color: T.muted, fontWeight: 800, fontSize: 14, cursor: 'pointer', padding: 6 }}
+          >
+            I'll look around first
+          </button>
+        )}
       </div>
     </div>
   );

@@ -9,17 +9,13 @@ import {
   type TouchEvent as ReactTouchEvent,
 } from 'react';
 import { T } from '../design/tokens';
+import { hapticTap } from '../lib/native';
 import { Icon } from './Icon';
 import { Troll } from './Troll';
 import type { DeviceStatus, TrollExpression, TrollVariant, CommandSource } from '../types';
 
 export function haptic(ms = 8) {
-  if (navigator.vibrate)
-    try {
-      navigator.vibrate(ms);
-    } catch {
-      /* unsupported */
-    }
+  hapticTap(ms);
 }
 
 type PressEvent = ReactMouseEvent<HTMLElement> | ReactTouchEvent<HTMLElement>;
