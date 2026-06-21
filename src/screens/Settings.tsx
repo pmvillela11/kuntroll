@@ -27,7 +27,7 @@ export function Settings({
 }) {
   const devices = useStore((s) => s.devices);
   const bridges = useStore((s) => s.bridges);
-  const { go, resetDemo } = useStore();
+  const { go, eraseAll } = useStore();
   const { remoteStyle, trollRendering, setTweak } = useTweaks();
   const [open, setOpen] = useState<Record<string, boolean>>({ devices: true, lights: false });
   const [prefsOpen, setPrefsOpen] = useState(false);
@@ -87,6 +87,13 @@ export function Settings({
           {isOpen && (
             <div style={{ borderTop: `1px solid ${T.border}` }}>
               <div style={{ padding: '10px 16px 4px', fontFamily: T.mono, fontSize: 10, color: T.muted, letterSpacing: 1.5 }}>HUBS · {bridges.length}</div>
+              {bridges.length === 0 && (
+                <div onClick={onAddDevice} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderBottom: `1px solid ${T.border}`, cursor: 'pointer' }}>
+                  <Icon name="plus" size={18} color={T.aiViolet} />
+                  <div style={{ flex: 1, fontWeight: 800, fontSize: 14, color: T.aiViolet }}>Add a Hue Bridge</div>
+                  <Icon name="chevR" size={15} color={T.muted} />
+                </div>
+              )}
               {bridges.map((b) => (
                 <div key={b.id} onClick={() => openBridge(b)} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderBottom: `1px solid ${T.border}`, cursor: 'pointer' }}>
                   <Icon name="ir" size={18} color={T.aiViolet} />
@@ -201,7 +208,7 @@ export function Settings({
         <Row icon="sparkle" label="Replay intro" onClick={onReplay} color={T.lime} />
         <Row icon="grid" label="Widgets" />
         <Row icon="settings" label="Preferences" onClick={() => setPrefsOpen(true)} />
-        <Row icon="refresh" label="Reset demo data" onClick={resetDemo} color={T.error} last />
+        <Row icon="refresh" label="Erase all data" onClick={eraseAll} color={T.error} last />
       </Card>
       <p style={{ textAlign: 'center', color: T.muted, fontSize: 12, fontWeight: 600, marginTop: 14 }}>Kun Troll — Homeware Hub · v1.0</p>
 

@@ -2,9 +2,9 @@
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import { T } from '../design/tokens';
 import { DEVICE_ICON, Icon } from '../components/Icon';
-import { Card, Mono, Sheet, Slider, Toggle, TopBar, TweenNumber, haptic } from '../components/ui';
-import { SOUND_MODES, SOURCES } from '../data/seed';
-import { useStore, useTweaks } from '../store/store';
+import { Card, EmptyState, Mono, Sheet, Slider, Toggle, TopBar, TweenNumber, haptic } from '../components/ui';
+import { SOUND_MODES, SOURCES } from '../data/constants';
+import { useStore, useTweaks, VARKEY } from '../store/store';
 import type { Device, RemoteStyle } from '../types';
 
 function btnStyle(feel: RemoteStyle, active?: boolean): CSSProperties {
@@ -427,13 +427,14 @@ function LampRemote({ d, update, feel, act }: { d: Device; update: Update; feel:
   );
 }
 
-export function Controller() {
+export function Controller({ openAddDevice }: { openAddDevice: () => void }) {
   const devices = useStore((s) => s.devices);
   const scenes = useStore((s) => s.scenes);
   const mainId = useStore((s) => s.mainId);
   const volId = useStore((s) => s.volId);
   const { updateDevice, runScene, back, setMainId, setVolId } = useStore();
   const feel = useTweaks((s) => s.remoteStyle);
+  const trollVariant = VARKEY[useTweaks((s) => s.trollRendering)];
   const [setMainOpen, setSetMainOpen] = useState(false);
   const [firedPill, setFiredPill] = useState<string | null>(null);
 
@@ -445,6 +446,24 @@ export function Controller() {
   const volCapable = devices.filter((d) => typeof d.state.volume === 'number');
   const d = devices.find((x) => x.id === mainId);
   const vd = devices.find((x) => x.id === volId);
+
+  if (controllable.length === 0) {
+    return (
+      <div style={{ minHeight: '100%' }}>
+        <TopBar title="Control" onBack={back} />
+        <div style={{ padding: '40px 20px' }}>
+          <EmptyState
+            exp="sleepy"
+            variant={trollVariant}
+            title="Nothing to control yet"
+            sub="Add your TV, receiver or lights and their remote appears right here."
+            action="Add a device"
+            onAction={openAddDevice}
+          />
+        </div>
+      </div>
+    );
+  }
 
   let body;
   if (!d) body = <div style={{ padding: 40, textAlign: 'center', color: T.muted }}>Pick a device.</div>;

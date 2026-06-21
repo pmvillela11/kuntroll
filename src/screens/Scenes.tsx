@@ -162,7 +162,9 @@ export function Scenes({ onNewScene, onEditScene, onDuplicate }: { onNewScene: (
       )}
       {custom.length > 0 && (
         <>
-          <div style={{ fontFamily: T.mono, fontSize: 11, color: T.muted, letterSpacing: 1.5, textTransform: 'uppercase', margin: '18px 0 10px' }}>Custom</div>
+          {prebuilt.length > 0 && (
+            <div style={{ fontFamily: T.mono, fontSize: 11, color: T.muted, letterSpacing: 1.5, textTransform: 'uppercase', margin: '18px 0 10px' }}>Custom</div>
+          )}
           {custom.map(renderCard)}
         </>
       )}

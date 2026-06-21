@@ -41,6 +41,7 @@ export interface Device {
   latency?: number | null;
   lastSeen?: string;
   bridge?: number;
+  hueId?: string; // light id on its Hue bridge
   state: DeviceState;
   commands?: DeviceCommand[];
 }
@@ -50,6 +51,7 @@ export interface SceneStep {
   label: string;
   delay: number;
   action?: string;
+  value?: number | string; // volume/brightness level, source/input name, …
 }
 
 export interface Scene {
@@ -76,6 +78,7 @@ export interface Bridge {
   model: string;
   ip: string;
   status: DeviceStatus;
+  username?: string; // Hue API key obtained via link-button pairing
 }
 
 export interface LightScene {

@@ -2,9 +2,9 @@
 import { useState, type ReactNode } from 'react';
 import { T } from '../design/tokens';
 import { DEVICE_ICON, Icon } from '../components/Icon';
-import { Btn, Card, Mono, PillButton, Slider, StatusDot, Toggle, TopBar, haptic } from '../components/ui';
+import { Btn, Card, EmptyState, Mono, PillButton, Slider, StatusDot, Toggle, TopBar, haptic } from '../components/ui';
 import { EditWrap } from '../components/EditWrap';
-import { useStore } from '../store/store';
+import { useStore, useTweaks, VARKEY } from '../store/store';
 import type { Device, Room } from '../types';
 
 function Sub({ children }: { children: ReactNode }) {
@@ -28,7 +28,26 @@ export function Rooms({
   const devices = useStore((s) => s.devices);
   const scenes = useStore((s) => s.scenes);
   const { runScene, updateDevice, go, reorderRoom, deleteRoom } = useStore();
+  const trollVariant = VARKEY[useTweaks((s) => s.trollRendering)];
   const [edit, setEdit] = useState(false);
+
+  if (rooms.length === 0) {
+    return (
+      <div style={{ padding: '4px 20px 20px' }}>
+        <TopBar title="Rooms" onBack={() => go('home')} />
+        <div style={{ border: `1px dashed ${T.border}`, borderRadius: 20, marginTop: 8 }}>
+          <EmptyState
+            exp="happy"
+            variant={trollVariant}
+            title="No rooms yet"
+            sub="Group your devices by room to get per-room scenes, lights and quick controls."
+            action="New room"
+            onAction={onAddRoom}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: '4px 20px 20px' }}>
